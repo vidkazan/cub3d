@@ -14,6 +14,18 @@ int	game_close(t_data *data)
     exit(0);
 }
 
+void render_tex(t_data *data)
+{
+	char *addr_n_pos;
+	char *addr_n = mlx_get_data_addr(data->tex_n, &data->mlx->bits_per_pixel, &data->mlx->line_length, &data->mlx->endian);
+
+	addr_n_pos = addr_n + (1 * data->mlx->line_length + 1 * (data->mlx->bits_per_pixel / 8));
+	*(unsigned int *)addr_n_pos = 0x000000FF;
+	printf(">>>start %p curr %p bpp %d ll %d e %d\n",addr_n,addr_n_pos,data->mlx->bits_per_pixel, data->mlx->line_length, data->mlx->endian);
+	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->tex_n, 1, 1);
+}
+
+
 void render_loop(t_data *data)
 {
     data->mlx->img = mlx_new_image(data->mlx->mlx, data->win_w, data->win_h);
@@ -24,7 +36,8 @@ void render_loop(t_data *data)
 	render_player(data);
 	render_normal(data);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win,data->mlx->img, 0,0);
-    mlx_destroy_image(data->mlx->mlx, data->mlx->img);
+	render_tex(data);
+	mlx_destroy_image(data->mlx->mlx, data->mlx->img);
 }
 
 void	render(t_data *data)
@@ -55,6 +68,7 @@ int	main(int ac, char **av)
     if(ac > 1)
         data->debug++;
     map_gen(data);
+    load_xpm_to_img(data);
     render(data);
 	return (0);
 }

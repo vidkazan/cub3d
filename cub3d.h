@@ -21,7 +21,7 @@
 
 typedef struct s_render
 {
-	int color;
+	unsigned int color;
 	float cameraX;
 	float ray_dir_x;
 	float ray_dir_y;
@@ -89,7 +89,10 @@ typedef struct s_data
 	int			win_h;
 	int			error;
 	int			section_size;
-
+	void 		*tex_n;
+	void 		*tex_s;
+	void 		*tex_w;
+	void 		*tex_e;
 }				t_data;
 
 
@@ -122,5 +125,6 @@ void	render(t_data *data);
 int	main(int ac, char **av);
 void  map_gen(t_data *data);
 void render_bg(t_data *data);
+void load_xpm_to_img(t_data *data);
 
 #endif

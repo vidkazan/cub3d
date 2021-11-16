@@ -34,6 +34,10 @@ void data_data_init(t_data *data)
 	data->win_h = 1350;
 	data->error = 0;
 	data->map = NULL;
+	data->tex_n = NULL;
+	data->tex_s = NULL;
+	data->tex_w = NULL;
+	data->tex_e = NULL;
 }
 
 void	data_mlx(t_mlx *mlx)
