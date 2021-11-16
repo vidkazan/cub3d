@@ -1,59 +1,12 @@
 #include "cub3d.h"
 
-int ft_strlen_arr(char **arr)
+unsigned long long	current_timestamp(t_data *data)
 {
-	int i;
+	unsigned long long	current_ms;
 
-	i = 0;
-	if(!arr || !arr[0])
-		return 0;
-	while(arr[i])
-		i++;
-	return i;
-}
-
-char    **ft_arrdup(char **arr)
-{
-	char **arr_dup;
-	int i;
-	int arr_len;
-
-	if(!arr || !arr[0])
-		return NULL;
-	i = -1;
-	arr_len = ft_strlen_arr(arr);
-	arr_dup = (char **)malloc(sizeof(char *) * (arr_len + 1));
-	while (++i < arr_len)
-		arr_dup[i] = ft_strdup(arr[i]);
-	arr_dup[arr_len] = NULL;
-	return arr_dup;
-}
-
-char	**ft_arrjoin(char **s1, char **s2)
-{
-	char	**res;
-	int		size_all;
-	int     i;
-	int     len1;
-
-	if (!s1 && !s2)
-		return (NULL);
-	len1 = ft_strlen_arr(s1);
-	size_all = len1 + ft_strlen_arr(s2);
-	res = malloc(sizeof(char*) * (size_all + 1));
-	res[size_all] = NULL;
-	i = 0;
-	while(i < len1)
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	while(i < size_all)
-	{
-		res[i] = s2[i - len1];
-		i++;
-	}
-	return (res);
+	gettimeofday(&data->timeval, &data->timezone);
+	current_ms = data->timeval.tv_sec * 1000 + data->timeval.tv_usec * 0.001;
+	return (current_ms - data->start_ms);
 }
 
 int	game_close(t_data *data)
@@ -63,20 +16,29 @@ int	game_close(t_data *data)
 
 void	data_init(t_data *data)
 {
-	data->section_size = 50;
-    data->player_angle = 0;
-    data->player_fov = M_PI_2;
-    data->debug = 0;
-    data->player_posx = 200;
-    data->player_posy = 200;
-    data->section_count = 8;
+	data->frame_time = 0;
+	data->start_ms = 0;
+	data->rotate_speed = 0;
+	data->move_speed = 0;
+
+	data->section_size = 20;
+	data->player_posx = 5;
+	data->player_posy = 5;
+
+    data->dirX = -1;
+	data->dirY = 0;
+
+	data->planeX = 0;
+	data->planeY = 0.5;
+
+	data->debug = 0;
 	data->win_w = 1000;
 	data->win_h = 500;
 	data->error = 0;
 	data->mlx = NULL;
 	data->win = NULL;
 	data->img = NULL;
-    data->map = NULL;
+	data->map = NULL;
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -92,6 +54,15 @@ void render_sec(t_data *data,int i, int j, char type, int color)
 	int size = data->section_size;
     int k;
 	int coord_arr[4];
+
+	if(data->map[i][j] == 'A')
+		color = RED;
+	if(data->map[i][j] == 'B')
+		color = WHITE;
+	if(data->map[i][j] == 'C')
+		color = BLUE;
+	if(data->map[i][j] == 'D')
+		color = GREEN;
 
 	if(type == 'A')
 	{
@@ -138,6 +109,15 @@ void render_sec(t_data *data,int i, int j, char type, int color)
     }
 }
 
+void render_player(t_data *data)
+{
+	my_mlx_pixel_put(data,data->player_posx * data->section_size, data->player_posy * data->section_size, RED);
+	my_mlx_pixel_put(data,data->player_posx * data->section_size + 2, data->player_posy * data->section_size, RED);
+	my_mlx_pixel_put(data,data->player_posx * data->section_size - 2, data->player_posy * data->section_size, RED);
+	my_mlx_pixel_put(data,data->player_posx * data->section_size, data->player_posy * data->section_size + 2, RED);
+	my_mlx_pixel_put(data,data->player_posx * data->section_size, data->player_posy * data->section_size - 2, RED);
+}
+
 void    render_map(t_data *data)
 {
 	int color = WHITE;
@@ -146,7 +126,7 @@ void    render_map(t_data *data)
 
     while(data->map[i])
 	{
-    	j=0;
+    	j = 0;
 		while (data->map[i][j])
 		{
 			if(data->map[i][j] == 'A' || data->map[i][j] == 'B' || data->map[i][j] == 'C' || data->map[i][j] == 'D' || data->map[i][j] == 'R')
@@ -165,76 +145,215 @@ void    render_map(t_data *data)
     }
 }
 
-int is_wall_crossing(t_data *data,float x,float  y)
+void draw_line(t_data *data,int i,int draw_start,int draw_end,int color)
 {
-	return 0;
+	while( draw_start++ < draw_end)
+		my_mlx_pixel_put(data, i, draw_start, color);
 }
 
-void render_player_fov(t_data *data)
+void	get_speed(t_data *data)
 {
+	data->old_time = data->time;
+	data->time = current_timestamp(data);
+	data->frame_time = data->time - data->old_time;
+
+//	data->move_speed = data->frame_time / 1000000;
+//	data->rotate_speed = data->frame_time / 1000000;
+	data->move_speed = 0.05;
+	data->rotate_speed = 0.05;
+}
+
+int get_color(t_data *data, int map_x, int map_y, int side)
+{
+	int color = 0x00000005;
+//	if(side)
+	if(data->map[map_y][map_x] == 'A')
+		color = RED;
+//	else if(side)
+	if(data->map[map_y][map_x] == 'B')
+		color = WHITE;
+//	if(!side)
+	if(data->map[map_y][map_x] == 'C')
+		color = BLUE;
+//	else if(!side)
+	if(data->map[map_y][map_x] == 'D')
+		color = GREEN;
+	return color;
+}
+
+void render_main(t_data *data)
+{
+	int color;
+	float cameraX;
+	float ray_dir_x;
+	float ray_dir_y;
     int i;
-    float fov_angle;
-    int x;
-    int y;
+    int j;
+	float delta_dist_x;
+	float delta_dist_y;
+	float side_dist_x;
+	float side_dist_y;
+	float perp_wall_dist;
 
-	int box_x = (int)(data->player_posx - ((int)data->player_posx % data->section_size));
-	int box_y = (int)(data->player_posy - ((int)data->player_posy % data->section_size));
-	int next_box_pos_x;
-	int next_box_pos_y;
-    int player_angle_x = cos(data->player_angle);
-	int player_angle_y = sin(data->player_angle);
+	int line_height;
 
-//	if(player_angle_x > 0)
+	int map_x;
+	int map_y;
 
-	printf(">>> player pos %f %f %f box %d %d\n", data->player_posx, data->player_posy,data->player_angle, box_x, box_y);
-    fov_angle = data->player_angle - data->player_fov / 2;
-	while (fov_angle < (data->player_angle + data->player_fov / 2))
+	int step_x;
+	int step_y;
+
+	int hit;
+	int side;
+
+	int draw_start;
+	int draw_end;
+
+	map_x = (int)data->player_posx;
+	map_y = (int)data->player_posy;
+	i = -1;
+	printf("\n>>> new frame | dirX %f dirY %f a %f| posx %f posy %f | mapx %d mapy %d\n",data->dirX, data->dirY, (atan(data->dirY/data->dirX)), data->player_posx, data->player_posy, map_x, map_y);
+	while(++i < data->win_w)
 	{
-		i = 0;
-		while (i < 100)
+		map_x = (int)data->player_posx;
+		map_y = (int)data->player_posy;
+		hit = 0;
+		cameraX = 2 * i/(float)data->win_w - 1;
+		ray_dir_x = data->dirX + data->planeX * cameraX;
+		ray_dir_y = data->dirY + data->planeY * cameraX;
+//		if(!(i % 333))
+//			printf(">>> %03d |camX %f | rdX %f rdY %f |", i,cameraX, ray_dir_x,ray_dir_y);
+		delta_dist_x = (ray_dir_x == 0) ? 1e30 : FT_ABS(1 / ray_dir_x);
+		delta_dist_y = (ray_dir_y == 0) ? 1e30 : FT_ABS(1 / ray_dir_y);
+//		if(!(i % 333))
+//			printf(" ddX %010f ddY %010f |",delta_dist_x, delta_dist_y);
+
+		if (ray_dir_x < 0)
 		{
-			x = data->player_posx + (i * cos(fov_angle));
-			y = data->player_posy + (i * sin(fov_angle));
-			if(is_wall_crossing(data, x, y))
-				break;
-			my_mlx_pixel_put(data, x, y, BLUE);
-			i += 3;
+			step_x = -1;
+			side_dist_x = (data->player_posx - map_x) * delta_dist_x;
 		}
-		fov_angle += M_PI_4/15;
+		else
+		{
+			step_x = 1;
+			side_dist_x = (map_x + 1.0 - data->player_posx) * delta_dist_x;
+		}
+		if (ray_dir_y < 0)
+		{
+			step_y = -1;
+			side_dist_y = (data->player_posy - map_y) * delta_dist_y;
+		}
+		else
+		{
+			step_y = 1;
+			side_dist_y = (map_y + 1.0 - data->player_posy) * delta_dist_y;
+		}
+		while (hit == 0)
+		{
+			if (side_dist_x < side_dist_y)
+			{
+				side_dist_x += delta_dist_x;
+				map_x += step_x;
+				side = 0;
+
+			}
+			else
+			{
+				side_dist_y += delta_dist_y;
+				map_y += step_y;
+				side = 1;
+			}
+
+			if (data->map[map_y][map_x] != '0')
+				hit = 1;
+		}
+//		if(!(i % 333))
+//			printf(" sdx %010f | sdy %010f | \n",side_dist_x, side_dist_y);
+		if(side == 0)
+			perp_wall_dist = (side_dist_x - delta_dist_x);
+		else
+			perp_wall_dist = (side_dist_y - delta_dist_y);
+
+		line_height = (int)(data->win_h / perp_wall_dist);
+
+		draw_start = -line_height / 2 + data->win_h / 2;
+		draw_end = line_height / 2 + data->win_h / 2;
+
+		if(draw_end >= data->win_h)
+			draw_end = data->win_h - 1;
+		if(draw_start < 0)
+			draw_start = 0;
+
+		color = get_color(data,map_x, map_y, side)/ 2;
+		if (side)
+			color /= 4;
+		draw_line(data, i, draw_start, draw_end, color);
 	}
+	get_speed(data);
 }
 
-void render_player(t_data *data)
+void 	render_normal(t_data *data)
 {
-	render_player_fov(data);
-	my_mlx_pixel_put(data,data->player_posx, data->player_posy, RED);
-	my_mlx_pixel_put(data,data->player_posx + 1, data->player_posy, RED);
-	my_mlx_pixel_put(data,data->player_posx - 1, data->player_posy, RED);
-	my_mlx_pixel_put(data,data->player_posx, data->player_posy + 1, RED);
-	my_mlx_pixel_put(data,data->player_posx, data->player_posy - 1, RED);
-
+	float i = 0;
+	while(i < 1)
+	{
+		my_mlx_pixel_put(data, (data->player_posx + i * data->dirX) * data->section_size, (data->player_posy + i * data->dirY) * data->section_size, 0x00AAAAAA);
+		i += 0.05;
+	}
 }
 
 void render_loop(t_data *data)
 {
     data->img = mlx_new_image(data->mlx, data->win_w, data->win_h);
     data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
-    render_map(data);
-    render_player(data);
-    mlx_put_image_to_window(data->mlx, data->win,data->img, 0,0);
+    render_main(data);
+	render_map(data);
+	render_player(data);
+	render_normal(data);
+	mlx_put_image_to_window(data->mlx, data->win,data->img, 0,0);
     mlx_destroy_image(data->mlx, data->img);
 }
 
 void rotate(t_data *data, int dir)
 {
-    data->player_angle += dir * 0.05;
+	if (dir < 0)
+	{
+		float oldDirX = data->dirX;
+		data->dirX = data->dirX * cos(-data->rotate_speed) - data->dirY * sin(-data->rotate_speed);
+		data->dirY = oldDirX * sin(-data->rotate_speed) + data->dirY * cos(-data->rotate_speed);
+		float oldPlaneX = data->planeX;
+		data->planeX = data->planeX * cos(-data->rotate_speed) - data->planeY * sin(-data->rotate_speed);
+		data->planeY = oldPlaneX * sin(-data->rotate_speed) + data->planeY * cos(-data->rotate_speed);
+	}
+	if (dir > 0)
+	{
+		float oldDirX = data->dirX;
+		data->dirX = data->dirX * cos(data->rotate_speed) - data->dirY * sin(data->rotate_speed);
+		data->dirY = oldDirX * sin(data->rotate_speed) + data->dirY * cos(data->rotate_speed);
+		float oldPlaneX = data->planeX;
+		data->planeX = data->planeX * cos(data->rotate_speed) - data->planeY * sin(data->rotate_speed);
+		data->planeY = oldPlaneX * sin(data->rotate_speed) + data->planeY * cos(data->rotate_speed);
+	}
     render_loop(data);
 }
 
 void move(t_data *data, int dir)
 {
-    data->player_posx += dir *(5 * cos(data->player_angle));
-    data->player_posy += dir *(5 * sin(data->player_angle));
+	if (dir > 0)
+	{
+		if(data->map[(int)(data->player_posy)][(int)(data->player_posx + data->dirX * data->move_speed)] == '0')
+			data->player_posx += data->dirX * data->move_speed;
+		if(data->map[(int)(data->player_posy + data->dirY * data->move_speed)][(int)data->player_posx] == '0')
+			data->player_posy += data->dirY * data->move_speed;
+	}
+	if (dir < 0)
+	{
+		if(data->map[(int)(data->player_posy)][(int)(data->player_posx - data->dirX * data->move_speed)] == '0')
+			data->player_posx -= data->dirX * data->move_speed;
+		if(data->map[(int)(data->player_posy - data->dirY * data->move_speed)][(int)data->player_posx] == '0')
+			data->player_posy -= data->dirY * data->move_speed;
+	}
+
     render_loop(data);
 }
 
@@ -243,11 +362,11 @@ int	key_hook(int keycode, t_data *data)
     if (keycode == 13)
         move(data, 1);
     else if (keycode == 0)
-        rotate(data, -1);
+        rotate(data, 1);
     else if (keycode == 1)
         move(data, -1);
     else if (keycode == 2)
-        rotate(data, 1);
+        rotate(data, -1);
     else if (keycode == 53)
         game_close(data);
     return (0);
@@ -261,22 +380,6 @@ void	render(t_data *data)
     mlx_hook(data->win, 17, 0, game_close, data);
 	mlx_hook(data->win, 2, 1L<<0, key_hook, data);
     mlx_loop(data->mlx);
-}
-
-void  map_gen(t_data *data)
-{
-	char *map[] =
-	{
-		"xxAAAAxAAAAxx",
-		"xEooooJooooFx",
-		"DoooooMoRoooB",
-		"xLQoooooooNIx",
-		"DoooooPoooooB",
-		"xHooooKooooGx",
-		"xxCCCCxCCCCxx",
-		""
-	};
-	data->map = ft_arrdup(map);
 }
 
 int	main(int ac, char **av)

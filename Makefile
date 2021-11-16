@@ -6,7 +6,7 @@ FLAGS = -I./mlx
 
 LIBS = -L./mlx -lmlx libft/libft.a -framework OpenGL -framework AppKit
 
-SRC = main.c
+SRC = main.c map_gen.c
 
 OBJ = $(SRC:.c=.o)
 
