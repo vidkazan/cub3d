@@ -3,22 +3,35 @@
 void  map_gen(t_data *data)
 {
 	int i = -1;
-	char **map = malloc(sizeof(char *) * (10 + 1));
-	map[10] = 0;
+	char **map = malloc(sizeof(char *) * (23 + 1));
+	map[23] = 0;
 	char *map_s[] =
 	{
-		"           xAAAx",
-		"           D000B",
-		"xAAAAAAAAAAD000BAAAAAAAAAAAAAx",
-		"D0000000000000000000000000000B",
-		"D0000000000000000000000000000B",
-		"xCCCCCCCCCCD000BCCCCCCCCCCCCCx",
-		"           D000B",
-		"           D000B",
-		"           D000B",
-		"           xCCCx"
+		"xAAAAAAAAAx",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"D000000000B",
+		"D000R0R000B",
+		"D000000000B",
+		"xCCCCCCCCCx",
 	};
-	while (++i < 10)
+	while (++i < 23)
 		map[i] = ft_strdup(map_s[i]);
 	data->map = map;
 }

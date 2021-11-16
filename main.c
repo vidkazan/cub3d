@@ -18,6 +18,7 @@ void render_loop(t_data *data)
 {
     data->mlx->img = mlx_new_image(data->mlx->mlx, data->win_w, data->win_h);
     data->mlx->addr = mlx_get_data_addr(data->mlx->img, &data->mlx->bits_per_pixel, &data->mlx->line_length, &data->mlx->endian);
+    render_bg(data);
     render_main(data);
 	render_map(data);
 	render_player(data);

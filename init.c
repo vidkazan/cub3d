@@ -14,6 +14,8 @@ void data_render_init(t_render *render)
 	render->line_height = 0;
 	render->map_x = 0;
 	render->map_y = 0;
+	render->old_map_x = 0;
+	render->old_map_y = 0;
 	render->step_x = 0;
 	render->step_y = 0;
 	render->hit = 0;
@@ -28,8 +30,8 @@ void data_data_init(t_data *data)
 	data->time->start_ms = 0;
 	data->section_size = 20;
 	data->debug = 0;
-	data->win_w = 1000;
-	data->win_h = 500;
+	data->win_w = 2550;
+	data->win_h = 1350;
 	data->error = 0;
 	data->map = NULL;
 }
@@ -44,13 +46,13 @@ void	data_mlx(t_mlx *mlx)
 void	data_player(t_player *plr)
 {
 	plr->player_posx = 5;
-	plr->player_posy = 5;
-	plr->dirX = -1;
+	plr->player_posy = 4;
+	plr->dirX = 1;
 	plr->dirY = 0;
 	plr->planeX = 0;
 	plr->planeY = 0.66;
-	plr->rotate_speed = 0;
-	plr->move_speed = 0;
+	plr->move_speed = 0.2;
+	plr->rotate_speed = 0.1;
 }
 
 void data_pointers_init(t_data *data)

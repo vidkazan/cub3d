@@ -12,10 +12,10 @@
 
 # define FT_ABS(x) (x > 0 ? x : -x)
 
-#define RED		0x00FF0000
-#define BLUE	0x000000FF
-#define WHITE	0x00FFFFFF
-#define GREEN	0x0000FF00
+#define RED		0x00A02020
+#define BLUE	0x000040A0
+#define WHITE	0x00C0C0C0
+#define GREEN	0x0000A040
 
 
 
@@ -33,6 +33,8 @@ typedef struct s_render
 	int line_height;
 	int map_x;
 	int map_y;
+	int old_map_x;
+	int old_map_y;
 	int step_x;
 	int step_y;
 	int hit;
@@ -119,5 +121,6 @@ int	key_hook(int keycode, t_data *data);
 void	render(t_data *data);
 int	main(int ac, char **av);
 void  map_gen(t_data *data);
+void render_bg(t_data *data);
 
 #endif
