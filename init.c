@@ -2,7 +2,7 @@
 
 void data_render_init(t_render *render)
 {
-	render->color = 0x00000F;
+	render->color = 0x00000F00;
 	render->cameraX = 0;
 	render->ray_dir_x = 0;
 	render->ray_dir_y = 0;
@@ -48,7 +48,7 @@ void	data_player(t_player *plr)
 	plr->dirX = -1;
 	plr->dirY = 0;
 	plr->planeX = 0;
-	plr->planeY = 0.5;
+	plr->planeY = 0.66;
 	plr->rotate_speed = 0;
 	plr->move_speed = 0;
 }

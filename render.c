@@ -188,8 +188,8 @@ void render_line_prep(t_data *data, int i)
 	data->rdr->map_y = (int)data->plr->player_posy;
 	data->rdr->hit = 0;
 	data->rdr->cameraX = 2 * i/(float)data->win_w - 1;
-	data->rdr->ray_dir_x = data->plr->dirX + data->plr->planeX * data->rdr->cameraX;
-	data->rdr->ray_dir_y = data->plr->dirY + data->plr->planeY * data->rdr->cameraX;
+	data->rdr->ray_dir_x = data->plr->dirX + data->plr->planeX * -data->rdr->cameraX;
+	data->rdr->ray_dir_y = data->plr->dirY + data->plr->planeY * -data->rdr->cameraX;
 	data->rdr->delta_dist_x = (data->rdr->ray_dir_x == 0) ? 1e30 : FT_ABS(1 / data->rdr->ray_dir_x);
 	data->rdr->delta_dist_y = (data->rdr->ray_dir_y == 0) ? 1e30 : FT_ABS(1 / data->rdr->ray_dir_y);
 }
