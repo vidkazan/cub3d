@@ -21,6 +21,12 @@
 
 typedef struct s_render
 {
+	int tex_x;
+	float wall_x;
+	int tex_h;
+	int tex_w;
+	unsigned int bg_color_up;
+	unsigned int bg_color_down;
 	unsigned int color;
 	float cameraX;
 	float ray_dir_x;
@@ -33,8 +39,6 @@ typedef struct s_render
 	int line_height;
 	int map_x;
 	int map_y;
-	int old_map_x;
-	int old_map_y;
 	int step_x;
 	int step_y;
 	int hit;
@@ -89,6 +93,8 @@ typedef struct s_data
 	int			win_h;
 	int			error;
 	int			section_size;
+	void		*curr_tex_address;
+	void		*curr_tex;
 	void 		*tex_n;
 	void 		*tex_s;
 	void 		*tex_w;
@@ -110,7 +116,7 @@ void render_player(t_data *data);
 void    render_map(t_data *data);
 void draw_line(t_data *data,int i,int draw_start,int draw_end,int color);
 void	get_speed(t_data *data);
-void get_color(t_data *data, int map_x, int map_y, int side);
+void get_color_and_tex(t_data *data, int map_x, int map_y, int side);
 void get_draw_start_end(t_data *data);
 void dda(t_data *data);
 void get_side_dist(t_data *data);

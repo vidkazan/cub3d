@@ -2,6 +2,12 @@
 
 void data_render_init(t_render *render)
 {
+	render->tex_x = 0;
+	render->wall_x = 0;
+//	render->tex_h = 200;
+//	render->tex_w = 200;
+	render->bg_color_up = 0x00555555;
+	render->bg_color_down = 0x00333333;
 	render->color = 0x00000F00;
 	render->cameraX = 0;
 	render->ray_dir_x = 0;
@@ -14,8 +20,6 @@ void data_render_init(t_render *render)
 	render->line_height = 0;
 	render->map_x = 0;
 	render->map_y = 0;
-	render->old_map_x = 0;
-	render->old_map_y = 0;
 	render->step_x = 0;
 	render->step_y = 0;
 	render->hit = 0;
@@ -28,10 +32,10 @@ void data_data_init(t_data *data)
 {
 	data->time->frame_time = 0;
 	data->time->start_ms = 0;
-	data->section_size = 20;
+	data->section_size = 7;
 	data->debug = 0;
-	data->win_w = 2550;
-	data->win_h = 1350;
+	data->win_w = 1000;
+	data->win_h = 500;
 	data->error = 0;
 	data->map = NULL;
 	data->tex_n = NULL;
@@ -70,6 +74,7 @@ void data_pointers_init(t_data *data)
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	plr = (t_player *)malloc(sizeof(t_player));
 	rdr = (t_render *)malloc(sizeof(t_render));
+	data->curr_tex = 0;
 	data->time = time;
 	data->mlx = mlx;
 	data->plr = plr;

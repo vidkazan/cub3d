@@ -103,19 +103,33 @@ void	get_speed(t_data *data)
 	data->plr->rotate_speed = data->time->frame_time / 1000000;
 }
 
-void get_color(t_data *data, int map_x, int map_y, int side)
+void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 {
-	if(side){
+	if(side)
+	{
 		if (data->map[map_y + 1] && data->map[map_y + 1][map_x] == '0')
+		{
 			data->rdr->color = RED;
+			data->curr_tex = data->tex_n;
+		}
 		else if (data->map[map_y - 1] && data->map[map_y - 1][map_x] == '0')
+		{
 			data->rdr->color = BLUE;
+			data->curr_tex = data->tex_s;
+		}
 	}
-	else{
+	else
+	{
 		if (data->map[map_y][map_x + 1] && data->map[map_y][map_x + 1] == '0')
+		{
 			data->rdr->color = WHITE;
+			data->curr_tex = data->tex_w;
+		}
 		else if (data->map[map_y][map_x - 1] && data->map[map_y][map_x - 1] == '0')
+		{
 			data->rdr->color = GREEN;
+			data->curr_tex = data->tex_e;
+		}
 	}
 }
 
@@ -219,12 +233,10 @@ void render_bg(t_data *data)
 		j = -1;
 		while (++j < data->win_h)
 		{
-			if(j < data->win_h /2)
-				my_mlx_pixel_put(data,i,j, 0x00555555);
-//				mlx_pixel_put(data->mlx,data->mlx->win,i,j,0x00555555);
+			if(j < data->win_h / 2)
+				my_mlx_pixel_put(data,i,j, data->rdr->bg_color_up);
 			else
-				my_mlx_pixel_put(data,i,j, 0x00333333);
-//				mlx_pixel_put(data->mlx,data->mlx->win,i,j,0x00333333);
+				my_mlx_pixel_put(data,i,j, data->rdr->bg_color_down);
 		}
 	}
 }
@@ -236,8 +248,6 @@ void render_main(t_data *data)
 	i = -1;
 	data->rdr->map_x = (int)data->plr->player_posx;
 	data->rdr->map_y = (int)data->plr->player_posy;
-	data->rdr->old_map_x = data->rdr->map_x;
-	data->rdr->old_map_y = data->rdr->map_y;
 	//	printf(">>> new frame | dirX %f dirY %f a %f| posx %f posy %f | mapx %d mapy %d\n",data->dirX, data->dirY, (atan(data->dirY/data->dirX)), data->player_posx, data->player_posy, map_x, map_y);
 	while(++i < data->win_w)
 	{
@@ -250,8 +260,40 @@ void render_main(t_data *data)
 			data->rdr->perp_wall_dist = (data->rdr->side_dist_y - data->rdr->delta_dist_y);
 		data->rdr->line_height = (int)(data->win_h / data->rdr->perp_wall_dist);
 		get_draw_start_end(data);
-		get_color(data,data->rdr->map_x, data->rdr->map_y, data->rdr->side);
-		draw_line(data, i, data->rdr->draw_start, data->rdr->draw_end, data->rdr->color);
+		get_color_and_tex(data,data->rdr->map_x, data->rdr->map_y, data->rdr->side);
+//		draw_line(data, i, data->rdr->draw_start, data->rdr->draw_end, data->rdr->color);
+		if (data->rdr->side == 0)
+			data->rdr->wall_x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
+		else
+			data->rdr->wall_x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
+
+		data->rdr->wall_x -= floor((data->rdr->wall_x));
+		data->rdr->tex_x = (int)(data->rdr->wall_x * (float)data->rdr->tex_w);
+		if(data->rdr->side == 0 && data->rdr->ray_dir_x > 0)
+			data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
+		if(data->rdr->side == 1 && data->rdr->ray_dir_y < 0)
+			data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
+
+		float step = 1.0 * data->rdr->tex_h / data->rdr->line_height;
+		float texPos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
+		int bpp = 0;
+		int ll = 0;
+		int end = 0;
+		char *curr_color_addr;
+		for(int y = data->rdr->draw_start; y<data->rdr->draw_end; y++)
+		{
+			int texY = (int)texPos & (data->rdr->tex_h - 1);
+			texPos += step;
+			data->curr_tex_address = mlx_get_data_addr(data->curr_tex, &bpp ,&ll,&end);
+			if(data->curr_tex_address)
+//				curr_color_addr = data->curr_tex_address + ((ll * texY) + (data->rdr->tex_x * bpp/8));
+				curr_color_addr = data->curr_tex_address + ((ll * 50) + (50 * bpp/8));
+//			data->rdr->color = texture[texNum][texHeight * texY + texX];  // HERE
+//			addr_n_pos = addr_n + (1 * data->mlx->line_length + 1 * (data->mlx->bits_per_pixel / 8));
+
+			data->rdr->color = *(unsigned int *)curr_color_addr;
+			my_mlx_pixel_put(data, i, y, data->rdr->color);
+		}
 	}
 //	get_speed(data);
 }
