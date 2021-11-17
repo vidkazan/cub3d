@@ -22,6 +22,7 @@
 typedef struct s_render
 {
 	int tex_x;
+	float wall_y;
 	float wall_x;
 	int tex_h;
 	int tex_w;
@@ -111,10 +112,10 @@ void	data_player(t_player *plr);
 void data_pointers_init(t_data *data);
 void	data_init(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void render_sec(t_data *data,int i, int j, char type, int color);
+void render_sec(t_data *data,int i, int j, int color);
 void render_player(t_data *data);
 void    render_map(t_data *data);
-void draw_line(t_data *data,int i,int draw_start,int draw_end,int color);
+void draw_line(t_data *data,int i,int draw_start,int draw_end,int color, int type);
 void	get_speed(t_data *data);
 void get_color_and_tex(t_data *data, int map_x, int map_y, int side);
 void get_draw_start_end(t_data *data);

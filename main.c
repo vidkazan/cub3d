@@ -62,7 +62,6 @@ int	main(int ac, char **av)
 {
 	t_data	*data;
     data = (t_data *)malloc(sizeof(t_data));
-
 	data_init(data);
     if(ac > 1)
         data->debug++;

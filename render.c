@@ -1,54 +1,22 @@
 #include "cub3d.h"
 
-void render_sec(t_data *data,int i, int j, char type, int color)
+void render_sec(t_data *data,int i, int j, int color)
 {
 	int size = data->section_size;
     int k;
 	int coord_arr[4];
 
-	if(type == 'A')
+	coord_arr[0] = j * size;
+	coord_arr[1] = i * size;
+	coord_arr[2] = (j + 1) * size;
+	coord_arr[3] = (i + 1) * size;
+	while(coord_arr[0] < coord_arr[2])
 	{
-		coord_arr[0] = j * size;
-		coord_arr[1] = (i + 1) * size;
-		coord_arr[2] = (j + 1) * size;
-		coord_arr[3] = (i + 1) * size;
+		k = coord_arr[1];
+		while(k < coord_arr[3])
+			my_mlx_pixel_put(data, coord_arr[0], k++, color);
+		coord_arr[0]++;
 	}
-	else if(type == 'C')
-	{
-		coord_arr[0] = j * size;
-		coord_arr[1] = i * size;
-		coord_arr[2] = (j + 1) * size;
-		coord_arr[3] = i * size;
-	}
-	else if(type == 'B')
-	{
-		coord_arr[0] = j * size;
-		coord_arr[1] = i * size;
-		coord_arr[2] = j * size;
-		coord_arr[3] = (i + 1) * size;
-	}
-	else if(type == 'D')
-	{
-		coord_arr[0] = (j + 1) * size;
-		coord_arr[1] = i * size;
-		coord_arr[2] = (j + 1) * size;
-		coord_arr[3] = (i + 1) * size;
-	}
-	else
-		return;
-
-    if(coord_arr[2] > coord_arr[0])
-    {
-        k = coord_arr[2] - coord_arr[0];
-        while(k--)
-            my_mlx_pixel_put(data, coord_arr[0] + k, coord_arr[1], color);
-    }
-    else if(coord_arr[3] > coord_arr[1])
-    {
-        k = coord_arr[3] - coord_arr[1];
-        while(k--)
-            my_mlx_pixel_put(data, coord_arr[0], coord_arr[1] + k, color);
-    }
 }
 
 void render_player(t_data *data)
@@ -63,34 +31,38 @@ void render_player(t_data *data)
 void    render_map(t_data *data) // TODO #101 fixed map box(circle?) with scaling
 {
 	int color = WHITE;
-    int i = 0;
+    int i = -1;
 	int j;
 
-    while(data->map[i])
+    while(data->map[++i])
 	{
-    	j = 0;
-		while (data->map[i][j])
+    	j = -1;
+		while (data->map[i][++j])
 		{
-			if(data->map[i][j] == 'A' || data->map[i][j] == 'B' || data->map[i][j] == 'C' || data->map[i][j] == 'D' || data->map[i][j] == 'R')
-				render_sec(data, i,j,data->map[i][j], color);
-			if(data->map[i][j] == 'E' || data->map[i][j] == 'F' || data->map[i][j] == 'M' || data->map[i][j] == 'L' || data->map[i][j] == 'Q' || data->map[i][j] == 'N' || data->map[i][j] == 'I'|| data->map[i][j] == 'R')
-				render_sec(data, i,j,'A', color);
-			if(data->map[i][j] == 'F' || data->map[i][j] == 'G' || data->map[i][j] == 'J' || data->map[i][j] == 'M' || data->map[i][j] == 'N' || data->map[i][j] == 'P' || data->map[i][j] == 'K'|| data->map[i][j] == 'R')
-				render_sec(data, i,j,'B', color);
-			if(data->map[i][j] == 'G' || data->map[i][j] == 'H' || data->map[i][j] == 'P' || data->map[i][j] == 'L' || data->map[i][j] == 'Q' || data->map[i][j] == 'N' || data->map[i][j] == 'I'|| data->map[i][j] == 'R')
-				render_sec(data, i,j,'C', color);
-			if(data->map[i][j] == 'H' || data->map[i][j] == 'E' || data->map[i][j] == 'J' || data->map[i][j] == 'M' || data->map[i][j] == 'Q' || data->map[i][j] == 'P' || data->map[i][j] == 'K'|| data->map[i][j] == 'R')
-				render_sec(data, i,j,'D', color);
-			j++;
+			if(data->map[i][j] != '0')
+			{
+//				if(data->map[i][j] != 'D')
+//					render_sec(data, i, j, 0x00606060); // FIXME remove hardcode
+//				else
+					render_sec(data, i, j, color);
+			}
 		}
-        i++;
     }
 }
 
-void draw_line(t_data *data,int i,int draw_start,int draw_end,int color)
+void draw_line(t_data *data,int i,int draw_start,int draw_end,int color, int type)
 {
+	int s = draw_start;
+	int e = draw_end;
 	while( draw_start++ < draw_end)
-		my_mlx_pixel_put(data, i, draw_start, color);
+	{
+		if(type)
+			my_mlx_pixel_put(data, i, draw_start, 0x00000000);
+		else
+			my_mlx_pixel_put(data, i, draw_start, color);
+	}
+	my_mlx_pixel_put(data, i, e, 0x00000000);
+	my_mlx_pixel_put(data, i, s, 0x00000000);
 }
 
 void	get_speed(t_data *data)
@@ -105,14 +77,26 @@ void	get_speed(t_data *data)
 
 void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 {
-	if(side)
+	float x;
+	float y;
+
+	x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
+	x -= map_x;
+	y = data->plr->player_posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
+	y -= map_y;
+//	if(data->map[map_y][map_x] == 'D')
+//	{
+//		data->curr_tex = data->tex_w;
+//		return;
+//	}
+	if(!side)
 	{
-		if (data->map[map_y + 1] && data->map[map_y + 1][map_x] == '0')
+		if (x < 0.5)
 		{
 			data->rdr->color = RED;
 			data->curr_tex = data->tex_n;
 		}
-		else if (data->map[map_y - 1] && data->map[map_y - 1][map_x] == '0')
+		else
 		{
 			data->rdr->color = BLUE;
 			data->curr_tex = data->tex_s;
@@ -120,15 +104,15 @@ void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 	}
 	else
 	{
-		if (data->map[map_y][map_x + 1] && data->map[map_y][map_x + 1] == '0')
+		if (y < 0.5)
 		{
 			data->rdr->color = WHITE;
-			data->curr_tex = data->tex_w;
+			data->curr_tex = data->tex_e;
 		}
-		else if (data->map[map_y][map_x - 1] && data->map[map_y][map_x - 1] == '0')
+		else
 		{
 			data->rdr->color = GREEN;
-			data->curr_tex = data->tex_e;
+			data->curr_tex = data->tex_w;
 		}
 	}
 }
@@ -241,6 +225,71 @@ void render_bg(t_data *data)
 	}
 }
 
+void get_perp(t_data *data)
+{
+	if(data->rdr->side == 0)
+		data->rdr->perp_wall_dist = (data->rdr->side_dist_x - data->rdr->delta_dist_x);
+	else
+		data->rdr->perp_wall_dist = (data->rdr->side_dist_y - data->rdr->delta_dist_y);
+	data->rdr->line_height = (int)(data->win_h / data->rdr->perp_wall_dist);
+}
+
+void get_wallx_y(t_data *data)
+{
+	if (data->rdr->side == 0)
+		data->rdr->wall_x = data->plr->player_posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
+	else
+		data->rdr->wall_x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
+	data->rdr->wall_x -= floor((data->rdr->wall_x));
+
+	if (data->rdr->side == 0)
+		data->rdr->wall_y = data->plr->player_posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
+	else
+		data->rdr->wall_y = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
+	data->rdr->wall_y -= floor((data->rdr->wall_y));
+}
+
+void get_tex_x(t_data *data)
+{
+	data->rdr->tex_x = (int)(data->rdr->wall_x * (float)data->rdr->tex_w);
+	if(data->rdr->side == 0 && data->rdr->ray_dir_x > 0)
+		data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
+	if(data->rdr->side == 1 && data->rdr->ray_dir_y < 0)
+		data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
+}
+
+void draw_tex(t_data *data, int i)
+{
+	float step;
+	float texPos;
+	char *curr_color_addr;
+	int bpp;
+	int ll;
+	int end;
+	int y;
+	int texY;
+	step = 1.0 * data->rdr->tex_h / data->rdr->line_height;
+	texPos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
+	y = data->rdr->draw_start;
+	data->curr_tex_address = mlx_get_data_addr(data->curr_tex, &bpp ,&ll,&end);
+	while (y++ < data->rdr->draw_end)
+	{
+		texY = (int)texPos;
+		texPos += step;
+		if(texY == data->rdr->tex_h - 1 && data->rdr->tex_x == 0) // FIXME costyl
+		{
+			curr_color_addr = data->curr_tex_address + ((ll * (texY - 1)) + (ll-(data->rdr->tex_x * bpp / 8)));
+			data->rdr->color = *(unsigned int *)curr_color_addr;
+		}
+		else
+		{
+			curr_color_addr = data->curr_tex_address + ((ll * texY) + (ll-(data->rdr->tex_x * bpp / 8)));
+			data->rdr->color = *(unsigned int *)curr_color_addr;
+		}
+		my_mlx_pixel_put(data, i, y, data->rdr->color);
+	}
+}
+
 void render_main(t_data *data)
 {
 	int i;
@@ -248,52 +297,17 @@ void render_main(t_data *data)
 	i = -1;
 	data->rdr->map_x = (int)data->plr->player_posx;
 	data->rdr->map_y = (int)data->plr->player_posy;
-	//	printf(">>> new frame | dirX %f dirY %f a %f| posx %f posy %f | mapx %d mapy %d\n",data->dirX, data->dirY, (atan(data->dirY/data->dirX)), data->player_posx, data->player_posy, map_x, map_y);
 	while(++i < data->win_w)
 	{
 		render_line_prep(data, i);
 		get_side_dist(data);
 		dda(data);
-		if(data->rdr->side == 0)
-			data->rdr->perp_wall_dist = (data->rdr->side_dist_x - data->rdr->delta_dist_x);
-		else
-			data->rdr->perp_wall_dist = (data->rdr->side_dist_y - data->rdr->delta_dist_y);
-		data->rdr->line_height = (int)(data->win_h / data->rdr->perp_wall_dist);
+		get_perp(data);
 		get_draw_start_end(data);
+		get_wallx_y(data);
 		get_color_and_tex(data,data->rdr->map_x, data->rdr->map_y, data->rdr->side);
-//		draw_line(data, i, data->rdr->draw_start, data->rdr->draw_end, data->rdr->color);
-		if (data->rdr->side == 0)
-			data->rdr->wall_x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
-		else
-			data->rdr->wall_x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
-
-		data->rdr->wall_x -= floor((data->rdr->wall_x));
-		data->rdr->tex_x = (int)(data->rdr->wall_x * (float)data->rdr->tex_w);
-		if(data->rdr->side == 0 && data->rdr->ray_dir_x > 0)
-			data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
-		if(data->rdr->side == 1 && data->rdr->ray_dir_y < 0)
-			data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
-
-		float step = 1.0 * data->rdr->tex_h / data->rdr->line_height;
-		float texPos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
-		int bpp = 0;
-		int ll = 0;
-		int end = 0;
-		char *curr_color_addr;
-		for(int y = data->rdr->draw_start; y<data->rdr->draw_end; y++)
-		{
-			int texY = (int)texPos & (data->rdr->tex_h - 1);
-			texPos += step;
-			data->curr_tex_address = mlx_get_data_addr(data->curr_tex, &bpp ,&ll,&end);
-			if(data->curr_tex_address)
-//				curr_color_addr = data->curr_tex_address + ((ll * texY) + (data->rdr->tex_x * bpp/8));
-				curr_color_addr = data->curr_tex_address + ((ll * 50) + (50 * bpp/8));
-//			data->rdr->color = texture[texNum][texHeight * texY + texX];  // HERE
-//			addr_n_pos = addr_n + (1 * data->mlx->line_length + 1 * (data->mlx->bits_per_pixel / 8));
-
-			data->rdr->color = *(unsigned int *)curr_color_addr;
-			my_mlx_pixel_put(data, i, y, data->rdr->color);
-		}
+		get_tex_x(data);
+		draw_tex(data,i);
 	}
 //	get_speed(data);
 }

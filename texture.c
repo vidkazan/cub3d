@@ -4,7 +4,7 @@
 
 #include "cub3d.h"
 
-void load_xpm_to_img(t_data *data)
+void load_xpm_to_img(t_data *data) // FIXME tex_w tex_w(in array?) for every tex
 {
 	char *path[4];
 	path[0] = "xpm/coll1.xpm";

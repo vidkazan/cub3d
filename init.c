@@ -4,10 +4,8 @@ void data_render_init(t_render *render)
 {
 	render->tex_x = 0;
 	render->wall_x = 0;
-//	render->tex_h = 200;
-//	render->tex_w = 200;
-	render->bg_color_up = 0x00555555;
-	render->bg_color_down = 0x00333333;
+	render->bg_color_up = 0x00333333;
+	render->bg_color_down = 0x00555555;
 	render->color = 0x00000F00;
 	render->cameraX = 0;
 	render->ray_dir_x = 0;
@@ -34,8 +32,8 @@ void data_data_init(t_data *data)
 	data->time->start_ms = 0;
 	data->section_size = 7;
 	data->debug = 0;
-	data->win_w = 1000;
-	data->win_h = 500;
+	data->win_w = 2000;
+	data->win_h = 1000;
 	data->error = 0;
 	data->map = NULL;
 	data->tex_n = NULL;
