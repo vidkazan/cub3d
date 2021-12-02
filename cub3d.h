@@ -17,8 +17,6 @@
 #define WHITE	0x00C0C0C0
 #define GREEN	0x0000A040
 
-
-
 typedef struct s_render
 {
 	int tex_x;
