@@ -93,12 +93,12 @@ void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 	{
 		if (x < 0.5)
 		{
-			data->rdr->color = RED;
+//			data->rdr->color = RED;
 			data->curr_tex = data->tex_n;
 		}
 		else
 		{
-			data->rdr->color = BLUE;
+//			data->rdr->color = BLUE;
 			data->curr_tex = data->tex_s;
 		}
 	}
@@ -106,12 +106,12 @@ void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 	{
 		if (y < 0.5)
 		{
-			data->rdr->color = WHITE;
+//			data->rdr->color = WHITE;
 			data->curr_tex = data->tex_e;
 		}
 		else
 		{
-			data->rdr->color = GREEN;
+//			data->rdr->color = GREEN;
 			data->curr_tex = data->tex_w;
 		}
 	}

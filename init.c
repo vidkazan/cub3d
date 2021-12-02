@@ -52,7 +52,7 @@ void	data_mlx(t_mlx *mlx)
 void	data_player(t_player *plr)
 {
 	plr->player_posx = 5;
-	plr->player_posy = 4;
+	plr->player_posy = 10;
 	plr->dirX = 1;
 	plr->dirY = 0;
 	plr->planeX = 0;
