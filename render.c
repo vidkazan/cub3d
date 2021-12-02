@@ -283,7 +283,7 @@ void draw_tex(t_data *data, int i)
 		}
 		else
 		{
-			curr_color_addr = data->curr_tex_address + ((ll * texY) + (ll-(data->rdr->tex_x * bpp / 8)));
+			curr_color_addr = data->curr_tex_address + ((ll * texY) + ( ll-(data->rdr->tex_x * bpp / 8)));
 			data->rdr->color = *(unsigned int *)curr_color_addr;
 		}
 		my_mlx_pixel_put(data, i, y, data->rdr->color);
