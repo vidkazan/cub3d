@@ -113,11 +113,13 @@ typedef struct s_data
 	int			color_c_blue;
 }				t_data;
 
+// init.c
+
+void data_render_init(t_render *render);
+void data_data_init(t_data *data);
 
 unsigned long long	current_timestamp(t_data *data);
 int	game_close(t_data *data);
-void data_render_init(t_render *render);
-void data_data_init(t_data *data);
 void	data_mlx(t_mlx *mlx);
 void	data_player(t_player *plr);
 void data_pointers_init(t_data *data);
@@ -128,7 +130,7 @@ void render_player(t_data *data);
 void    render_map(t_data *data);
 void draw_line(t_data *data,int i,int draw_start,int draw_end,int color, int type);
 void	get_speed(t_data *data);
-void get_color_and_tex(t_data *data, int map_x, int map_y, int side);
+void get_tex(t_data *data, int map_x, int map_y, int side);
 void get_draw_start_end(t_data *data);
 void dda(t_data *data);
 void get_side_dist(t_data *data);
@@ -152,6 +154,10 @@ int	ft_lstsize(t_list *lst);
 int	get_next_line(int fd, char **line);
 int	ft_error(char *str);
 void	ft_map_check(t_data *data);
+void draw_tex(t_data *data, int i);
+void get_tex_x(t_data *data);
+
+// parsing
 
 void	ft_text_no(t_data *data, int y);
 void	ft_text_so(t_data *data, int y);

@@ -40,29 +40,9 @@ void    render_map(t_data *data) // TODO #101 fixed map box(circle?) with scalin
 		while (data->map[i][++j])
 		{
 			if(data->map[i][j] != '0')
-			{
-//				if(data->map[i][j] != 'D')
-//					render_sec(data, i, j, 0x00606060); // FIXME remove hardcode
-//				else
 					render_sec(data, i, j, color);
-			}
 		}
     }
-}
-
-void draw_line(t_data *data,int i,int draw_start,int draw_end,int color, int type)
-{
-	int s = draw_start;
-	int e = draw_end;
-	while( draw_start++ < draw_end)
-	{
-		if(type)
-			my_mlx_pixel_put(data, i, draw_start, 0x00000000);
-		else
-			my_mlx_pixel_put(data, i, draw_start, color);
-	}
-	my_mlx_pixel_put(data, i, e, 0x00000000);
-	my_mlx_pixel_put(data, i, s, 0x00000000);
 }
 
 void	get_speed(t_data *data)
@@ -75,7 +55,7 @@ void	get_speed(t_data *data)
 	data->plr->rotate_speed = data->time->frame_time / 1000000;
 }
 
-void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
+void get_tex(t_data *data, int map_x, int map_y, int side)
 {
 	float x;
 	float y;
@@ -84,36 +64,19 @@ void get_color_and_tex(t_data *data, int map_x, int map_y, int side)
 	x -= map_x;
 	y = data->plr->player_posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
 	y -= map_y;
-//	if(data->map[map_y][map_x] == 'D')
-//	{
-//		data->curr_tex = data->tex_w;
-//		return;
-//	}
 	if(!side)
 	{
 		if (x < 0.5)
-		{
-//			data->rdr->color = RED;
 			data->curr_tex = data->tex_n;
-		}
 		else
-		{
-//			data->rdr->color = BLUE;
 			data->curr_tex = data->tex_s;
-		}
 	}
 	else
 	{
 		if (y < 0.5)
-		{
-//			data->rdr->color = WHITE;
 			data->curr_tex = data->tex_e;
-		}
 		else
-		{
-//			data->rdr->color = GREEN;
 			data->curr_tex = data->tex_w;
-		}
 	}
 }
 
@@ -146,9 +109,7 @@ void dda(t_data *data)
 		}
 
 		if (data->map[data->rdr->map_y][data->rdr->map_x] != '0')
-		{
 			data->rdr->hit = 1;
-		}
 	}
 }
 
@@ -190,6 +151,7 @@ void render_line_prep(t_data *data, int i)
 void 	render_normal(t_data *data)
 {
 	float i = 0;
+
 	while(i < 1)
 	{
 		my_mlx_pixel_put(data, (data->plr->player_posx + i * data->plr->dirX) * data->section_size, (data->plr->player_posy + i * data->plr->dirY) * data->section_size, 0x00AAAAAA);
@@ -202,7 +164,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	char	*dst;
 
 	dst = data->mlx->addr + (y * data->mlx->line_length + x * (data->mlx->bits_per_pixel / 8));
-
 	*(unsigned int*)dst = color;
 }
 
@@ -249,47 +210,6 @@ void get_wallx_y(t_data *data)
 	data->rdr->wall_y -= floor((data->rdr->wall_y));
 }
 
-void get_tex_x(t_data *data)
-{
-	data->rdr->tex_x = (int)(data->rdr->wall_x * (float)data->rdr->tex_w);
-	if(data->rdr->side == 0 && data->rdr->ray_dir_x > 0)
-		data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
-	if(data->rdr->side == 1 && data->rdr->ray_dir_y < 0)
-		data->rdr->tex_x = data->rdr->tex_w - data->rdr->tex_x - 1;
-}
-
-void draw_tex(t_data *data, int i)
-{
-	float step;
-	float texPos;
-	char *curr_color_addr;
-	int bpp;
-	int ll;
-	int end;
-	int y;
-	int texY;
-	step = 1.0 * data->rdr->tex_h / data->rdr->line_height;
-	texPos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
-	y = data->rdr->draw_start;
-	data->curr_tex_address = mlx_get_data_addr(data->curr_tex, &bpp ,&ll,&end);
-	while (y++ < data->rdr->draw_end)
-	{
-		texY = (int)texPos;
-		texPos += step;
-		if(texY == data->rdr->tex_h - 1 && data->rdr->tex_x == 0) // FIXME costyl
-		{
-			curr_color_addr = data->curr_tex_address + ((ll * (texY - 1)) + (ll-(data->rdr->tex_x * bpp / 8)));
-			data->rdr->color = *(unsigned int *)curr_color_addr;
-		}
-		else
-		{
-			curr_color_addr = data->curr_tex_address + ((ll * texY) + ( ll-(data->rdr->tex_x * bpp / 8)));
-			data->rdr->color = *(unsigned int *)curr_color_addr;
-		}
-		my_mlx_pixel_put(data, i, y, data->rdr->color);
-	}
-}
-
 void render_main(t_data *data)
 {
 	int i;
@@ -305,9 +225,8 @@ void render_main(t_data *data)
 		get_perp(data);
 		get_draw_start_end(data);
 		get_wallx_y(data);
-		get_color_and_tex(data,data->rdr->map_x, data->rdr->map_y, data->rdr->side);
+		get_tex(data,data->rdr->map_x, data->rdr->map_y, data->rdr->side);
 		get_tex_x(data);
 		draw_tex(data,i);
 	}
-//	get_speed(data);
 }
