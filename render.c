@@ -208,7 +208,7 @@ void get_perp(t_data *data)
 		data->rdr->perp_wall_dist = (data->rdr->side_dist_x - data->rdr->delta_dist_x);
 	else
 		data->rdr->perp_wall_dist = (data->rdr->side_dist_y - data->rdr->delta_dist_y);
-	data->rdr->line_height = (int)(data->win_h / data->rdr->perp_wall_dist);
+	data->rdr->line_height = (int)(data->win_h * 1.3 / data->rdr->perp_wall_dist);
 }
 
 void get_wallx_y(t_data *data)
