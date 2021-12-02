@@ -84,6 +84,7 @@ typedef struct s_time
 
 typedef struct s_data
 {
+	int			pl_count;
 	t_time		*time;
 	t_render	*rdr;
 	t_player	*plr;
@@ -96,10 +97,20 @@ typedef struct s_data
 	int			section_size;
 	void		*curr_tex_address;
 	void		*curr_tex;
+	char 		*path_tex_n;
+	char 		*path_tex_s;
+	char 		*path_tex_w;
+	char 		*path_tex_e;
 	void 		*tex_n;
 	void 		*tex_s;
 	void 		*tex_w;
 	void 		*tex_e;
+	int			color_f_red;
+	int			color_f_green;
+	int			color_f_blue;
+	int			color_c_red;
+	int			color_c_green;
+	int			color_c_blue;
 }				t_data;
 
 
@@ -134,4 +145,16 @@ void  map_gen(t_data *data);
 void render_bg(t_data *data);
 void load_xpm_to_img(t_data *data);
 
+void	ft_read_map(t_data *m, char **argv);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+t_list	*ft_lstnew(void *content);
+int	ft_lstsize(t_list *lst);
+int	get_next_line(int fd, char **line);
+int	ft_error(char *str);
+void	ft_map_check(t_data *data);
+
+void	ft_text_no(t_data *data, int y);
+void	ft_text_so(t_data *data, int y);
+void	ft_text_we(t_data *data, int y);
+void	ft_text_ea(t_data *data, int y);
 #endif

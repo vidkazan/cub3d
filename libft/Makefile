@@ -34,7 +34,8 @@ SRCS = ft_bzero.c \
 		ft_putendl_fd.c \
 		ft_split.c \
 		ft_strtrim.c  \
-		ft_strlcat.c
+		ft_strlcat.c \
+		ft_strcmp.c
 
 SRCS_B = ft_lstdelone.c \
 			ft_lstclear.c \

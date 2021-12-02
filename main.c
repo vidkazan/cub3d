@@ -56,6 +56,13 @@ void	data_init(t_data *data)
 	data_mlx(data->mlx);
 	data_player(data->plr);
 	data_render_init(data->rdr);
+	data->pl_count = 0;
+	data->color_f_red = -1;
+	data->color_f_green = -1;
+	data->color_f_blue = -1;
+	data->color_c_red = -1;
+	data->color_c_green = -1;
+	data->color_c_blue = -1;
 }
 
 int	main(int ac, char **av)
@@ -63,9 +70,10 @@ int	main(int ac, char **av)
 	t_data	*data;
     data = (t_data *)malloc(sizeof(t_data));
 	data_init(data);
-    if(ac > 1)
+    if(ac > 2)
         data->debug++;
-    map_gen(data);
+	ft_read_map(data, av);
+	ft_map_check(data);
     load_xpm_to_img(data);
     render(data);
 	return (0);
