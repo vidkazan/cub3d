@@ -67,16 +67,32 @@ void get_tex(t_data *data, int map_x, int map_y, int side)
 	if(!side)
 	{
 		if (x < 0.5)
+		{
 			data->curr_tex = data->tex_n;
+			data->rdr->tex_h = data->rdr->tex_n_h;
+			data->rdr->tex_w = data->rdr->tex_n_w;
+		}
 		else
+		{
 			data->curr_tex = data->tex_s;
+			data->rdr->tex_h = data->rdr->tex_s_h;
+			data->rdr->tex_w = data->rdr->tex_s_w;
+		}
 	}
 	else
 	{
 		if (y < 0.5)
+		{
 			data->curr_tex = data->tex_e;
+			data->rdr->tex_h = data->rdr->tex_e_h;
+			data->rdr->tex_w = data->rdr->tex_e_w;
+		}
 		else
+		{
 			data->curr_tex = data->tex_w;
+			data->rdr->tex_h = data->rdr->tex_w_h;
+			data->rdr->tex_w = data->rdr->tex_w_w;
+		}
 	}
 }
 

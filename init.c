@@ -4,8 +4,8 @@ void data_render_init(t_render *render)
 {
 	render->tex_x = 0;
 	render->wall_x = 0;
-	render->bg_color_up = 0x00333333;
-	render->bg_color_down = 0x00555555;
+	render->bg_color_up = 0x00181818;
+	render->bg_color_down = 0x00151515;
 	render->color = 0x00000F00;
 	render->cameraX = 0;
 	render->ray_dir_x = 0;

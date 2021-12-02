@@ -24,8 +24,16 @@ typedef struct s_render
 	int tex_x;
 	float wall_y;
 	float wall_x;
-	int tex_h;
+	int tex_n_h;
+	int tex_n_w;
+	int tex_s_h;
+	int tex_s_w;
+	int tex_e_h;
+	int tex_e_w;
+	int tex_w_h;
+	int tex_w_w;
 	int tex_w;
+	int tex_h;
 	unsigned int bg_color_up;
 	unsigned int bg_color_down;
 	unsigned int color;
