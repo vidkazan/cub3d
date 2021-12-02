@@ -1,0 +1,5 @@
+Cub3d
+.DS_Store
+.idea
+*.o
+libft/*.o
