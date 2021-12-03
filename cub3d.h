@@ -33,6 +33,8 @@ typedef struct s_render
 	int tex_w_w;
 	int tex_w;
 	int tex_h;
+	int is_bg_color_up;
+	int is_bg_color_down;
 	unsigned int bg_color_up;
 	unsigned int bg_color_down;
 	unsigned int color;
@@ -161,7 +163,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 int	ft_lstsize(t_list *lst);
 int	get_next_line(int fd, char **line);
-int	ft_error(char *str);
+int	ft_error(void);
 void	ft_map_check(t_data *data);
 void draw_tex(t_data *data, int i);
 void get_tex_x(t_data *data);
@@ -179,5 +181,5 @@ char	**ft_arrdup(char **arr);
 void map_print(t_data	*data);
 void print_with_stamp(char *msg, t_data *data);
 void *mouse_check(void *win);
-
+void	free_arr(char **str);
 #endif

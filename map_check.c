@@ -16,10 +16,10 @@ int	ft_strlen_line2(char **str)
 	return (line);
 }
 
-int	ft_error(char *str)
+int	ft_error(void)
 {
-	write(2, str, ft_strlen(str));
-	exit (0);
+	write(2, "Error\n",6);
+	exit (1);
 }
 
 void	ft_texture(t_data *data)
@@ -60,7 +60,8 @@ void	ft_wall(t_data *data, int y)
 					!data->map[y][x + 1] || data->map[y][x + 1] == ' ' || \
 					!data->map[y - 1] || !data->map[y - 1][x] || data->map[y - 1][x] == ' ' || \
 					!data->map[y + 1] || !data->map[y + 1][x] || data->map[y + 1][x] == ' ')
-					ft_error ("Map is not valid\n");
+//					ft_error ("Map is not valid\n");
+					ft_error();
 			}
 			if (data->map[y][x] != '1' && data->map[y][x] != 'N' && data->map[y][x] != 'S' && data->map[y][x] != 'W' && data->map[y][x] != 'E')
 				data->map[y][x] = '0';
@@ -116,22 +117,23 @@ void	ft_symbol_map_check (t_data *data, int y)
 				data->map[y][x] != 'N' && data->map[y][x] != 'S' && \
 				data->map[y][x] != 'E' && data->map[y][x] != 'W' && \
 				data->map[y][x] != ' ')
-				ft_error("\033[0;31mInvalid characters in the map!\n");
+//				ft_error("\033[0;31mInvalid characters in the map!\n");
+				ft_error();
 			if (data->map[y][x] == 'N' || data->map[y][x] == 'S' || \
 				data->map[y][x] == 'E' || data->map[y][x] == 'W')
 					data->pl_count++;
 		}
 	}
 	if (data->pl_count != 1)
-		ft_error("\033[0;31mOops! You can't play! Map is not valid!\n");
+//		ft_error("\033[0;31mOops! You can't play! Map is not valid!\n");
+		ft_error();
 }
 
 char **ft_rec_map(t_data *data, int start)
 {
 	char **map;
-	if(start <= 5)
-		return NULL;
 	map = ft_arrdup(data->map + start -1);
+	free_arr(data->map);
 	return map;
 }
 
@@ -183,6 +185,14 @@ void	parse_player_pos(t_data *data)
 	}
 }
 
+void	params_check(t_data *data)
+{
+	if(!data->rdr->is_bg_color_down || !data->rdr->is_bg_color_up)
+		ft_error();
+	if(!data->path_tex_n || !data->path_tex_s || !data->path_tex_w || !data->path_tex_e)
+		ft_error();
+}
+
 void	ft_map_check(t_data *data)
 {
 	int	x;
@@ -199,7 +209,8 @@ void	ft_map_check(t_data *data)
 			ft_strncmp(data->map[y], "C", 1) != 0 && \
 			data->map[y][0] != '\0' && data->map[y][0] != ' ' && \
 			data->map[y][0] != '1')
-			ft_error ("error\n");
+//			ft_error ("error\n");
+			ft_error();
 		if (data->map[y][0] == ' ' || data->map[y][0] == '1')
 		{
 			x = -1;
@@ -207,7 +218,8 @@ void	ft_map_check(t_data *data)
 				if (data->map[y][x] == '1')
 					break ;
 			if (data->map[y][x] == '\0')
-				ft_error("ERROR\n");
+//				ft_error("ERROR\n");
+				ft_error();
 			break ;
 		}
 	}
@@ -216,6 +228,7 @@ void	ft_map_check(t_data *data)
 	data->map = ft_rec_map(data, get_map_start(data));
 	parse_player_pos(data);
 	ft_wall(data, 0); // проверка замкнутости стен
+	params_check(data);
 }
 
 char	**make_map(t_list **head, int size)
@@ -227,7 +240,8 @@ char	**make_map(t_list **head, int size)
 	i = -1;
 	map = ft_calloc(size + 1, sizeof(char *));
 	if (!map)
-		ft_error("Malloc error\n");
+//		ft_error("Malloc error\n");
+		ft_error();
 	tmp = *head;
 	while (tmp)
 	{

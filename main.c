@@ -84,15 +84,15 @@ void	file_load(t_data *data, int ac, char **av)
 
 	i = 0;
 	if (!av[1])
-		game_close(data);
+		ft_error();
 	while (av[1][i])
 		i++;
 	i -= 3;
 	if ((av[1][i - 1] != '.') || (ft_strncmp(&av[1][i], "cub", 3)))
-		game_close(data);
+		ft_error();
 	data->fd = open(av[1], O_RDONLY);
 	if (data->fd < 0)
-		game_close(data);
+		ft_error();
 	if (ac > 2)
 		ft_putstr_fd("Why so many arguments?) The first is used...\n", 1);
 }
@@ -115,7 +115,6 @@ int	main(int ac,char **av)
 	t_data	*data;
     data = (t_data *)malloc(sizeof(t_data));
 	data_init(data);
-	current_timestamp(data, 1);
 	file_load(data,ac,av);
 	ft_read_map(data, av);
 	ft_map_check(data);

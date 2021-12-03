@@ -42,24 +42,6 @@ int	ft_lstsize(t_list *lst)
 	return (i);
 }
 
-// void	ft_putnbr_fd(int n, int fd)
-// {
-// 	char			i;
-// 	unsigned int	V;
-
-// 	if (n < 0)
-// 	{
-// 		V = n * -1;
-// 		write(fd, "-", 1);
-// 	}
-// 	else
-// 		V = n;
-// 	if (V >= 10)
-// 		ft_putnbr_fd(V / 10, fd);
-// 	i = (V % 10) + '0';
-// 	write(fd, &i, 1);
-// }
-
 void	*ft_calloc(size_t count, size_t size)
 {
 	char			*buf;
@@ -107,4 +89,15 @@ char	**ft_arrdup(char **arr)
 		arr_dup[i] = ft_strdup(arr[i]);
 	arr_dup[arr_len] = NULL;
 	return (arr_dup);
+}
+
+void	free_arr(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+	str = NULL;
 }

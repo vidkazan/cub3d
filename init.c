@@ -5,8 +5,10 @@ void data_render_init(t_render *render)
 	render->tex_x = 0;
 	render->wall_x = 0;
 	render->bg_color_up = 0x00181818;
+	render->is_bg_color_up = 0;
 	render->bg_color_down = 0x00151515;
-	render->color = 0x00000F00;
+	render->is_bg_color_down = 0;
+	render->color = 0;
 	render->cameraX = 0;
 	render->ray_dir_x = 0;
 	render->ray_dir_y = 0;
@@ -28,10 +30,14 @@ void data_render_init(t_render *render)
 
 void data_data_init(t_data *data)
 {
-	data->path_tex_n = "xpm/wall1";
-	data->path_tex_s = "xpm/wall2";
-	data->path_tex_w = "xpm/wall3";
-	data->path_tex_e = "xpm/wall4";
+//	data->path_tex_n = "xpm/wall1";
+//	data->path_tex_s = "xpm/wall2";
+//	data->path_tex_w = "xpm/wall3";
+//	data->path_tex_e = "xpm/wall4";
+	data->path_tex_n = NULL;
+	data->path_tex_s = NULL;
+	data->path_tex_w = NULL;
+	data->path_tex_e = NULL;
 	data->time->frame_time = 0;
 	data->time->start_ms = 0;
 	data->section_size = 5;

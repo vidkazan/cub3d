@@ -18,13 +18,9 @@ void	ft_text_no(t_data *data, int y)
 
 	no = ft_split(data->map[y], ' ');
 	if (ft_strcmp(no[0], "NO") != 0 || no[1] == NULL || no[2] != NULL)
-		ft_error ("error\n");
-	data->path_tex_n = no[1];
-	// if (no[1] == NULL)
-
-	// int x = -1;
-	// while (no[++x])
-	// 	ft_putendl_fd(no[x], 1);
+		ft_error();
+	data->path_tex_n = ft_strdup(no[1]);
+	free_arr(no);
 }
 
 void	ft_text_so(t_data *data, int y)
@@ -33,8 +29,9 @@ void	ft_text_so(t_data *data, int y)
 
 	so = ft_split(data->map[y], ' ');
 	if (ft_strcmp(so[0], "SO") != 0 || so[1] == NULL || so[2] != NULL)
-		ft_error ("error\n");
-	data->path_tex_s = so[1];
+		ft_error();
+	data->path_tex_s = ft_strdup(so[1]);
+	free_arr(so);
 }
 
 void	ft_text_we(t_data *data, int y)
@@ -43,8 +40,9 @@ void	ft_text_we(t_data *data, int y)
 
 	we = ft_split(data->map[y], ' ');
 	if (ft_strcmp(we[0], "WE") != 0 || we[1] == NULL || we[2] != NULL)
-		ft_error ("error\n");
-	data->path_tex_w = we[1];
+		ft_error();
+	data->path_tex_w = ft_strdup(we[1]);
+	free_arr(we);
 }
 
 void	ft_text_ea(t_data *data, int y)
@@ -53,8 +51,9 @@ void	ft_text_ea(t_data *data, int y)
 
 	ea = ft_split(data->map[y], ' ');
 	if (ft_strcmp(ea[0], "EA") != 0 || ea[1] == NULL || ea[2] != NULL)
-		ft_error ("error\n");
-	data->path_tex_e = ea[1];
+		ft_error();
+	data->path_tex_e = ft_strdup(ea[1]);
+	free_arr(ea);
 }
 
 int check_color_codes(char **colors)
@@ -87,11 +86,14 @@ void	ft_colour_f(t_data *data, int y)
 	char	**colors;
 	f = ft_split(data->map[y], ' ');
 	if (ft_strcmp(f[0], "F") != 0 || f[1] == NULL || !*f[1])
-		ft_error ("error1\n");
+		ft_error();
 	colors = ft_split(f[1], ',');
+	free_arr(f);
 	if((ft_strlen_line2(colors) != 3 )|| !check_color_codes(colors))
-		ft_error ("error2\n");
+		ft_error();
 	data->rdr->bg_color_down = rgb_hex_conversion(colors);
+	data->rdr->is_bg_color_down = 1;
+	free_arr(colors);
 }
 
 void	ft_colour_c(t_data *data, int y)
@@ -100,9 +102,12 @@ void	ft_colour_c(t_data *data, int y)
 	char **colors;
 	c = ft_split(data->map[y], ' ');
 	if (ft_strcmp(c[0], "C") != 0 || c[1] == NULL || !*c[1])
-		ft_error("error3\n");
+		ft_error();
 	colors = ft_split(c[1], ',');
+	free_arr(c);
 	if ((ft_strlen_line2(colors) != 3) || !check_color_codes(colors))
-		ft_error("error4\n");
+		ft_error();
 	data->rdr->bg_color_up = rgb_hex_conversion(colors);
+	data->rdr->is_bg_color_up = 1;
+	free_arr(colors);
 }

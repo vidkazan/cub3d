@@ -11,7 +11,7 @@ void load_xpm_to_img(t_data *data) // FIXME tex_w tex_w(in array?) for every tex
 	data->tex_w = mlx_xpm_file_to_image(data->mlx, data->path_tex_w, &data->rdr->tex_w_w, &data->rdr->tex_w_h);
 	data->tex_e = mlx_xpm_file_to_image(data->mlx, data->path_tex_e, &data->rdr->tex_e_w, &data->rdr->tex_e_h);
 	if(!data->tex_n || !data->tex_s || !data->tex_w || !data->tex_e)
-		ft_error("Error\n");
+		ft_error();
 }
 
 void draw_tex(t_data *data, int i)
