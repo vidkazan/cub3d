@@ -1,30 +1,27 @@
 #include "cub3d.h"
 
-unsigned long long	current_timestamp(t_data *data)
+unsigned long long	current_timestamp(t_data *data,int type)
 {
+	int res;
 	unsigned long long	current_ms;
 
 	gettimeofday(&data->time->timeval, &data->time->timezone);
 	current_ms = data->time->timeval.tv_sec * 1000 + data->time->timeval.tv_usec * 0.001;
-	return (current_ms - data->time->start_ms);
+	if(type == 2)
+	{
+		res = (current_ms - data->time->start_ms);
+		data->time->start_ms = current_ms;
+		return res;
+	}
+	else
+		data->time->start_ms = current_ms;
+	return 0;
 }
 
 int	game_close(t_data *data)
 {
     exit(0);
 }
-
-void render_tex(t_data *data)
-{
-	char *addr_n_pos;
-	char *addr_n = mlx_get_data_addr(data->tex_n, &data->mlx->bits_per_pixel, &data->mlx->line_length, &data->mlx->endian);
-
-
-	*(unsigned int *)addr_n_pos = 0x000000FF;
-	printf(">>>start %p curr %p bpp %d ll %d e %d\n",addr_n,addr_n_pos,data->mlx->bits_per_pixel, data->mlx->line_length, data->mlx->endian);
-	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->tex_n, 1, 1);
-}
-
 
 void render_loop(t_data *data)
 {
@@ -65,13 +62,45 @@ void	data_init(t_data *data)
 	data->color_c_blue = -1;
 }
 
-int	main(int ac, char **av)
+void	file_load(t_data *data, int ac, char **av)
+{
+	int	i;
+
+	i = 0;
+	if (!av[1])
+		game_close(data);
+	while (av[1][i])
+		i++;
+	i -= 3;
+	if ((av[1][i - 1] != '.') || (ft_strncmp(&av[1][i], "cub", 3)))
+		game_close(data);
+	data->fd = open(av[1], O_RDONLY);
+	if (data->fd < 0)
+		game_close(data);
+	if (ac > 2)
+		ft_putstr_fd("Why so many arguments?) The first is used...\n", 1);
+}
+
+void map_print(t_data *data)
+{
+	int i;
+	i = -1;
+	while (data->map[++i])
+		ft_putendl_fd(data->map[i], 1);
+}
+
+void print_with_stamp(char *msg,t_data *data)
+{
+	printf("%04llums %s\n",current_timestamp(data,2), msg);
+}
+
+int	main(int ac,char **av)
 {
 	t_data	*data;
     data = (t_data *)malloc(sizeof(t_data));
 	data_init(data);
-    if(ac > 2)
-        data->debug++;
+	current_timestamp(data, 1);
+	file_load(data,ac,av);
 	ft_read_map(data, av);
 	ft_map_check(data);
     load_xpm_to_img(data);

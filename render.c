@@ -48,7 +48,7 @@ void    render_map(t_data *data) // TODO #101 fixed map box(circle?) with scalin
 void	get_speed(t_data *data)
 {
 	data->time->old_time = data->time->time;
-	data->time->time = current_timestamp(data);
+	data->time->time = current_timestamp(data,2);
 	data->time->frame_time = data->time->time - data->time->old_time;
 
 	data->plr->move_speed = data->time->frame_time / 1000000;
@@ -68,21 +68,6 @@ void get_tex(t_data *data, int map_x, int map_y, int side)
 	{
 		if (x < 0.5)
 		{
-			data->curr_tex = data->tex_n;
-			data->rdr->tex_h = data->rdr->tex_n_h;
-			data->rdr->tex_w = data->rdr->tex_n_w;
-		}
-		else
-		{
-			data->curr_tex = data->tex_s;
-			data->rdr->tex_h = data->rdr->tex_s_h;
-			data->rdr->tex_w = data->rdr->tex_s_w;
-		}
-	}
-	else
-	{
-		if (y < 0.5)
-		{
 			data->curr_tex = data->tex_e;
 			data->rdr->tex_h = data->rdr->tex_e_h;
 			data->rdr->tex_w = data->rdr->tex_e_w;
@@ -92,6 +77,21 @@ void get_tex(t_data *data, int map_x, int map_y, int side)
 			data->curr_tex = data->tex_w;
 			data->rdr->tex_h = data->rdr->tex_w_h;
 			data->rdr->tex_w = data->rdr->tex_w_w;
+		}
+	}
+	else
+	{
+		if (y < 0.5)
+		{
+			data->curr_tex = data->tex_s;
+			data->rdr->tex_h = data->rdr->tex_s_h;
+			data->rdr->tex_w = data->rdr->tex_s_w;
+		}
+		else
+		{
+			data->curr_tex = data->tex_n;
+			data->rdr->tex_h = data->rdr->tex_n_h;
+			data->rdr->tex_w = data->rdr->tex_n_w;
 		}
 	}
 }

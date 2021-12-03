@@ -28,11 +28,14 @@ void data_render_init(t_render *render)
 
 void data_data_init(t_data *data)
 {
+	data->path_tex_n = "xpm/wall1";
+	data->path_tex_s = "xpm/wall2";
+	data->path_tex_w = "xpm/wall3";
+	data->path_tex_e = "xpm/wall4";
 	data->time->frame_time = 0;
 	data->time->start_ms = 0;
 	data->section_size = 7;
-	data->debug = 0;
-	data->win_w = 2000;
+	data->win_w = 1900;
 	data->win_h = 1000;
 	data->error = 0;
 	data->map = NULL;
@@ -51,14 +54,9 @@ void	data_mlx(t_mlx *mlx)
 
 void	data_player(t_player *plr)
 {
-	plr->player_posx = 5;
-	plr->player_posy = 10;
-	plr->dirX = 1;
-	plr->dirY = 0;
-	plr->planeX = 0;
-	plr->planeY = 0.66;
 	plr->move_speed = 0.2;
-	plr->rotate_speed = 0.1;
+	plr->rotate_speed = M_PI/16;
+	plr->plane_value = 0.66;
 }
 
 void data_pointers_init(t_data *data)

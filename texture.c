@@ -10,6 +10,8 @@ void load_xpm_to_img(t_data *data) // FIXME tex_w tex_w(in array?) for every tex
 	data->tex_s = mlx_xpm_file_to_image(data->mlx, data->path_tex_s, &data->rdr->tex_s_w, &data->rdr->tex_s_h);
 	data->tex_w = mlx_xpm_file_to_image(data->mlx, data->path_tex_w, &data->rdr->tex_w_w, &data->rdr->tex_w_h);
 	data->tex_e = mlx_xpm_file_to_image(data->mlx, data->path_tex_e, &data->rdr->tex_e_w, &data->rdr->tex_e_h);
+	if(!data->tex_n || !data->tex_s || !data->tex_w || !data->tex_e)
+		ft_error("Error\n");
 }
 
 void draw_tex(t_data *data, int i)
@@ -30,7 +32,7 @@ void draw_tex(t_data *data, int i)
 	{
 		texY = (int)texPos;
 		texPos += step;
-		if(texY == data->rdr->tex_h - 1 && data->rdr->tex_x == 0) // FIXME costyl
+		if(texY == data->rdr->tex_h - 1 && data->rdr->tex_x == 0)
 		{
 			curr_color_addr = data->curr_tex_address + ((ll * (texY - 1)) + (ll-(data->rdr->tex_x * bpp / 8)));
 			data->rdr->color = *(unsigned int *)curr_color_addr;

@@ -59,6 +59,7 @@ typedef struct s_player
 {
 	float move_speed;
 	float rotate_speed;
+	float 	plane_value;
 	float	planeX;
 	float 	planeY;
 	float	dirX;
@@ -90,12 +91,12 @@ typedef struct s_time
 
 typedef struct s_data
 {
+	int 		fd;
 	int			pl_count;
 	t_time		*time;
 	t_render	*rdr;
 	t_player	*plr;
 	t_mlx		*mlx;
-	int			debug;
 	char		**map;
 	int			win_w;
 	int			win_h;
@@ -124,7 +125,7 @@ typedef struct s_data
 void data_render_init(t_render *render);
 void data_data_init(t_data *data);
 
-unsigned long long	current_timestamp(t_data *data);
+unsigned long long	current_timestamp(t_data *data, int type);
 int	game_close(t_data *data);
 void	data_mlx(t_mlx *mlx);
 void	data_player(t_player *plr);
@@ -169,4 +170,10 @@ void	ft_text_no(t_data *data, int y);
 void	ft_text_so(t_data *data, int y);
 void	ft_text_we(t_data *data, int y);
 void	ft_text_ea(t_data *data, int y);
+void	ft_colour_f(t_data *data, int y);
+void	ft_colour_c(t_data *data, int y);
+int		ft_strlen_line2(char **str);
+char	**ft_arrdup(char **arr);
+void map_print(t_data	*data);
+void print_with_stamp(char *msg, t_data *data);
 #endif
