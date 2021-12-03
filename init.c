@@ -34,7 +34,7 @@ void data_data_init(t_data *data)
 	data->path_tex_e = "xpm/wall4";
 	data->time->frame_time = 0;
 	data->time->start_ms = 0;
-	data->section_size = 7;
+	data->section_size = 5;
 	data->win_w = 1900;
 	data->win_h = 1000;
 	data->error = 0;

@@ -9,6 +9,7 @@
 #include "libft/libft.h"
 # include <unistd.h>
 #include <sys/time.h>
+#include <pthread.h>
 
 # define FT_ABS(x) (x > 0 ? x : -x)
 
@@ -91,6 +92,7 @@ typedef struct s_time
 
 typedef struct s_data
 {
+	int			mouse_pos;
 	int 		fd;
 	int			pl_count;
 	t_time		*time;
@@ -176,4 +178,6 @@ int		ft_strlen_line2(char **str);
 char	**ft_arrdup(char **arr);
 void map_print(t_data	*data);
 void print_with_stamp(char *msg, t_data *data);
+void *mouse_check(void *win);
+
 #endif

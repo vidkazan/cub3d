@@ -61,9 +61,9 @@ void	ft_wall(t_data *data, int y)
 					!data->map[y - 1] || !data->map[y - 1][x] || data->map[y - 1][x] == ' ' || \
 					!data->map[y + 1] || !data->map[y + 1][x] || data->map[y + 1][x] == ' ')
 					ft_error ("Map is not valid\n");
-				if (data->map[y][x] != '1' && data->map[y][x] != 'N' && data->map[y][x] != 'S' && data->map[y][x] != 'W' && data->map[y][x] != 'E')
-					data->map[y][x] = '0';
 			}
+			if (data->map[y][x] != '1' && data->map[y][x] != 'N' && data->map[y][x] != 'S' && data->map[y][x] != 'W' && data->map[y][x] != 'E')
+				data->map[y][x] = '0';
 		}
 	}
 }
