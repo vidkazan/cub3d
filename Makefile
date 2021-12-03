@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3D
 
 CC = gcc
 
@@ -6,7 +6,7 @@ FLAGS = -I./mlx
 
 LIBS = -L./mlx -lmlx libft/libft.a -framework OpenGL -framework AppKit
 
-SRC = main.c render.c init.c move.c texture.c map_check.c rec_texture.c lib_utils.c Get_Next_Line/get_next_line.c Get_Next_Line/get_next_line_utils.c
+SRC = 1main.c 2render.c 3init.c 4move.c 5texture.c 6map_check.c 7rec_texture.c lib_utils.c Get_Next_Line/get_next_line.c Get_Next_Line/get_next_line_utils.c
 
 OBJ = $(SRC:.c=.o)
 
