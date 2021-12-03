@@ -79,3 +79,32 @@ void	*ft_calloc(size_t count, size_t size)
 	}
 	return (buf);
 }
+
+int	ft_strlen_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr || !arr[0])
+		return (0);
+	while (arr[i])
+		i++;
+	return (i);
+}
+
+char	**ft_arrdup(char **arr)
+{
+	char	**arr_dup;
+	int		i;
+	int		arr_len;
+
+	if (!arr || !arr[0])
+		return (NULL);
+	i = -1;
+	arr_len = ft_strlen_arr(arr);
+	arr_dup = (char **)malloc(sizeof(char *) * (arr_len + 1));
+	while (++i < arr_len)
+		arr_dup[i] = ft_strdup(arr[i]);
+	arr_dup[arr_len] = NULL;
+	return (arr_dup);
+}

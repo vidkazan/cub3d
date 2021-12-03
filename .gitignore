@@ -3,3 +3,7 @@ Cub3d
 .idea
 *.o
 libft/*.o
+xpm/wall1.xpm
+xpm/wall2.xpm
+xpm/wall3.xpm
+xpm/wall4.xpm
