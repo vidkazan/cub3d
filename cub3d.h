@@ -189,5 +189,6 @@ char	**ft_rec_map(t_data *data, int start);
 int		get_map_start(t_data *data);
 void	parse_player_pos(t_data *data);
 void	params_check(t_data *data);
+void	replace_symbols(t_data *data);
 
 #endif

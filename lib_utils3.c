@@ -22,3 +22,22 @@ void	free_arr(char **str)
 	free(str);
 	str = NULL;
 }
+
+void	replace_symbols(t_data *data)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (data->map[++y])
+	{
+		x = -1;
+		while (data->map[y][++x])
+		{
+			if (data->map[y][x] != '1' && data->map[y][x] != 'N'\
+			&& data->map[y][x] != 'S' && data->map[y][x] != 'W' \
+			&& data->map[y][x] != 'E')
+			data->map[y][x] = '0';
+		}
+	}
+}

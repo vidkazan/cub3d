@@ -24,17 +24,19 @@ void	ft_wall(t_data *data, int y)
 		{
 			if (data->map[y][x] == '0')
 			{
-				if (!data->map[y][x - 1] || data->map[y][x - 1] == ' ' \
-				|| !data->map[y][x + 1] || data->map[y][x + 1] == ' ' \
-				|| !data->map[y - 1] || !data->map[y - 1][x] \
-				|| data->map[y - 1][x] == ' ' || !data->map[y + 1] \
-				|| !data->map[y + 1][x] || data->map[y + 1][x] == ' ')
+				if (y == 0 || x == 0)
+					ft_error(61);
+				if (data->map[y][x - 1] != '1' && data->map[y][x - 1] != '0')
+					ft_error(61);
+				if (!data->map[y][x + 1] || data->map[y][x + 1] == ' ' )
+					ft_error(61);
+				if (!data->map[y - 1] || !data->map[y - 1][x] || \
+					data->map[y - 1][x] == ' ')
+					ft_error(61);
+				if (!data->map[y + 1] || !data->map[y + 1][x] || \
+					data->map[y + 1][x] == ' ')
 					ft_error(61);
 			}
-			if (data->map[y][x] != '1' && data->map[y][x] != 'N'\
-			&& data->map[y][x] != 'S' && data->map[y][x] != 'W' \
-			&& data->map[y][x] != 'E')
-				data->map[y][x] = '0';
 		}
 	}
 }

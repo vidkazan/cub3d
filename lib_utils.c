@@ -25,7 +25,7 @@ int	ft_strlen_line2(char **str)
 int	ft_error(int code)
 {
 	code = 0;
-	write(2, "\033[0;31mError\033[0m\n", 21);
+	write(2, "\033[0;31mError\033[0m\n", 20);
 	exit (1);
 }
 
