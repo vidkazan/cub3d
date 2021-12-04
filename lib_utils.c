@@ -24,6 +24,7 @@ int	ft_strlen_line2(char **str)
 
 int	ft_error(int code)
 {
+	code = 0;
 	write(2, "Error\n", 6);
 	exit (1);
 }
