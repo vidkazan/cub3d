@@ -157,9 +157,6 @@ int	ft_error(int code);
 void	ft_map_check(t_data *data);
 void draw_tex(t_data *data, int i);
 void get_tex_x(t_data *data);
-
-// parsing
-
 void	ft_text_no(t_data *data, int y);
 void	ft_text_so(t_data *data, int y);
 void	ft_text_we(t_data *data, int y);
@@ -173,5 +170,16 @@ void print_with_stamp(char *msg, t_data *data);
 void *mouse_check(void *win);
 void	free_arr(char **str);
 void	get_perp(t_data *data);
+void	ft_texture(t_data *data);
+void	check_doubles(t_data *data);
+void	ft_symbol_map_check (t_data *data, int y);
+int initial_map_check(t_data *data);
+void	ft_map_check(t_data *data);
+void	ft_wall(t_data *data, int y);
+void	set_player_pos(t_data *data,int y,int x);
+char	**ft_rec_map(t_data *data, int start);
+int	get_map_start(t_data *data);
+void	parse_player_pos(t_data *data);
+void	params_check(t_data *data);
 
 #endif

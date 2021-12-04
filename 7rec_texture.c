@@ -12,6 +12,28 @@
 
 #include "cub3d.h"
 
+void	ft_texture(t_data *data)
+{
+	int	y;
+
+	y = -1;
+	while (data->map[++y])
+	{
+		if (ft_strncmp(data->map[y], "NO", 2) == 0)
+			ft_text_no(data, y);
+		if (ft_strncmp(data->map[y], "SO", 2) == 0)
+			ft_text_so(data, y);
+		if (ft_strncmp(data->map[y], "WE", 2) == 0)
+			ft_text_we(data, y);
+		if (ft_strncmp(data->map[y], "EA", 2) == 0)
+			ft_text_ea(data, y);
+		if (ft_strncmp(data->map[y], "F", 1) == 0)
+			ft_colour_f(data, y);
+		if (ft_strncmp(data->map[y], "C", 1) == 0)
+			ft_colour_c(data, y);
+	}
+}
+
 void	ft_text_no(t_data *data, int y)
 {
 	char	**no;
@@ -54,58 +76,4 @@ void	ft_text_ea(t_data *data, int y)
 		ft_error(74);
 	data->path_tex_e = ft_strdup(ea[1]);
 	free_arr(ea);
-}
-
-int check_color_codes(char **colors)
-{
-	int i =-1;
-	int j;
-
-	while(++i < 3)
-	{
-		j=-1;
-		while(++j < ft_strlen(colors[i]))
-		{
-			if(!ft_isdigit(colors[i][j]))
-				return 0;
-		}
-		if(ft_atoi(colors[i]) > 255)
-			return 0;
-	}
-	return 1;
-}
-
-unsigned int	rgb_hex_conversion(char **colors)
-{
-	return (((0 & 0xff) << 24) + ((ft_atoi(colors[0]) & 0xff) << 16) + ((ft_atoi(colors[1]) & 0xff) << 8) + ((ft_atoi(colors[2]) & 0xff)));
-}
-
-void	ft_colour_f(t_data *data, int y)
-{
-	char	**f;
-	char	**colors;
-	f = ft_split(data->map[y], ' ');
-	if (ft_strcmp(f[0], "F") != 0 || f[1] == NULL || !*f[1])
-		ft_error(75);
-	colors = ft_split(f[1], ',');
-	free_arr(f);
-	if((ft_strlen_line2(colors) != 3 )|| !check_color_codes(colors))
-		ft_error(76);
-	data->rdr->bg_color_down = rgb_hex_conversion(colors);
-	free_arr(colors);
-}
-
-void	ft_colour_c(t_data *data, int y)
-{
-	char **c;
-	char **colors;
-	c = ft_split(data->map[y], ' ');
-	if (ft_strcmp(c[0], "C") != 0 || c[1] == NULL || !*c[1])
-		ft_error(77);
-	colors = ft_split(c[1], ',');
-	free_arr(c);
-	if ((ft_strlen_line2(colors) != 3) || !check_color_codes(colors))
-		ft_error(78);
-	data->rdr->bg_color_up = rgb_hex_conversion(colors);
-	free_arr(colors);
 }

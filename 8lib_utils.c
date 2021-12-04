@@ -1,5 +1,19 @@
 #include "cub3d.h"
 
+int	ft_strlen_line2(char **str)
+{
+	int line = 0;
+	while (str[line])
+		line++;
+	return (line);
+}
+
+int	ft_error(int code)
+{
+	write(2, "Error\n",6);
+	exit (1);
+}
+
 int	game_close(void)
 {
 	exit(0);
