@@ -78,4 +78,18 @@ void data_pointers_init(t_data *data)
 	data->rdr = rdr;
 }
 
-
+void	data_init(t_data *data)
+{
+	data_pointers_init(data);
+	data_data_init(data);
+	data_mlx(data->mlx);
+	data_player(data->plr);
+	data_render_init(data->rdr);
+	data->pl_count = 0;
+	data->color_f_red = -1;
+	data->color_f_green = -1;
+	data->color_f_blue = -1;
+	data->color_c_red = -1;
+	data->color_c_green = -1;
+	data->color_c_blue = -1;
+}

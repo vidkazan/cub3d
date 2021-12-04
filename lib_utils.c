@@ -1,5 +1,10 @@
 #include "cub3d.h"
 
+int	game_close(void)
+{
+	exit(0);
+}
+
 float	ft_abs(float a)
 {
 	if(a < 0)
