@@ -21,7 +21,7 @@ int	check_color_codes(char **colors)
 	while (++i < 3)
 	{
 		j = -1;
-		while (++j < ft_strlen(colors[i]))
+		while (++j < (int)ft_strlen(colors[i]))
 		{
 			if (!ft_isdigit(colors[i][j]))
 				return (0);

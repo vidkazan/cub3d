@@ -21,7 +21,7 @@ int	max_len(char **arr)
 	res = 0;
 	while (arr[++i])
 	{
-		if (ft_strlen(arr[i]) > res)
+		if ((int)ft_strlen(arr[i]) > res)
 			res = ft_strlen(arr[i]);
 	}
 	return (res);
