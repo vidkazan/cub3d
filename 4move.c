@@ -36,11 +36,11 @@ float	get_pos_90deg(float dir_x, float dir_y, int mode, char proj)
 void	move_x(t_data *data, int dir)
 {
 	if (data->map[(int)(data->plr->posy)][(int)(data->plr->posx \
-	+ data->plr->dir_x * data->plr->move_speed)] == '0')
-		data->plr->posx += data->plr->dir_x * data->plr->move_speed;
+	+ data->plr->dir_x * data->plr->move_speed * dir)] == '0')
+		data->plr->posx += data->plr->dir_x * data->plr->move_speed * dir;
 	if (data->map[(int)(data->plr->posy + data->plr->dir_y \
-	* data->plr->move_speed)][(int)data->plr->posx] == '0')
-		data->plr->posy += data->plr->dir_y * data->plr->move_speed;
+	* data->plr->move_speed * dir)][(int)data->plr->posx] == '0')
+		data->plr->posy += data->plr->dir_y * data->plr->move_speed * dir;
 	render_loop(data);
 }
 
