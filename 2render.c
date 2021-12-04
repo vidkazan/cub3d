@@ -59,17 +59,17 @@ void	render_bg(t_data *data)
 void	get_wallx_y(t_data *data)
 {
 	if (data->rdr->side == 0)
-		data->rdr->wall_x = data->plr->player_posy + \
+		data->rdr->wall_x = data->plr->posy + \
 		data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
 	else
-		data->rdr->wall_x = data->plr->player_posx + \
+		data->rdr->wall_x = data->plr->posx + \
 		data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
 	data->rdr->wall_x -= floor((data->rdr->wall_x));
 	if (data->rdr->side == 0)
-		data->rdr->wall_y = data->plr->player_posy + \
+		data->rdr->wall_y = data->plr->posy + \
 		data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
 	else
-		data->rdr->wall_y = data->plr->player_posx + \
+		data->rdr->wall_y = data->plr->posx + \
 		data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
 	data->rdr->wall_y -= floor((data->rdr->wall_y));
 }
@@ -79,8 +79,8 @@ void	render_main(t_data *data)
 	int	i;
 
 	i = -1;
-	data->rdr->map_x = (int)data->plr->player_posx;
-	data->rdr->map_y = (int)data->plr->player_posy;
+	data->rdr->map_x = (int)data->plr->posx;
+	data->rdr->map_y = (int)data->plr->posy;
 	while (++i < data->win_w)
 	{
 		render_line_prep(data, i);

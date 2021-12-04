@@ -9,7 +9,7 @@ void	data_render_init(t_render *render)
 	render->bg_color_down = 0x00151515;
 	render->is_bg_color_down = 0;
 	render->color = 0;
-	render->cameraX = 0;
+	render->camera_x = 0;
 	render->ray_dir_x = 0;
 	render->ray_dir_y = 0;
 	render->delta_dist_x = 0;

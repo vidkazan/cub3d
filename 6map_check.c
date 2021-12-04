@@ -60,7 +60,6 @@ void	ft_wall(t_data *data, int y)
 					!data->map[y][x + 1] || data->map[y][x + 1] == ' ' || \
 					!data->map[y - 1] || !data->map[y - 1][x] || data->map[y - 1][x] == ' ' || \
 					!data->map[y + 1] || !data->map[y + 1][x] || data->map[y + 1][x] == ' ')
-//					ft_error ("Map is not valid\n");
 					ft_error(61);
 			}
 			if (data->map[y][x] != '1' && data->map[y][x] != 'N' && data->map[y][x] != 'S' && data->map[y][x] != 'W' && data->map[y][x] != 'E')
@@ -71,35 +70,35 @@ void	ft_wall(t_data *data, int y)
 
 void set_player_pos(t_data *data,int y,int x)
 {
-	data->plr->player_posx = x + 0.5;
-	data->plr->player_posy = y + 0.5;
+	data->plr->posx = x + 0.5;
+	data->plr->posy = y + 0.5;
 	if(data->map[y][x] == 'N')
 	{
-		data->plr->dirX = 0;
-		data->plr->planeY = 0;
-		data->plr->dirY = -1;
-		data->plr->planeX = 0.66;
+		data->plr->dir_x = 0;
+		data->plr->plane_y = 0;
+		data->plr->dir_y = -1;
+		data->plr->plane_x = 0.66;
 	}
 	if(data->map[y][x] == 'S')
 	{
-		data->plr->dirX = 0;
-		data->plr->planeY = 0;
-		data->plr->dirY = 1;
-		data->plr->planeX = -0.66;
+		data->plr->dir_x = 0;
+		data->plr->plane_y = 0;
+		data->plr->dir_y = 1;
+		data->plr->plane_x = -0.66;
 	}
 	if(data->map[y][x] == 'E')
 	{
-		data->plr->dirX = 1;
-		data->plr->planeY = 0.66;
-		data->plr->dirY = 0;
-		data->plr->planeX = 0;
+		data->plr->dir_x = 1;
+		data->plr->plane_y = 0.66;
+		data->plr->dir_y = 0;
+		data->plr->plane_x = 0;
 	}
 	if(data->map[y][x] == 'W')
 	{
-		data->plr->dirX = -1;
-		data->plr->planeY = -0.66;
-		data->plr->dirY = 0;
-		data->plr->planeX = 0;
+		data->plr->dir_x = -1;
+		data->plr->plane_y = -0.66;
+		data->plr->dir_y = 0;
+		data->plr->plane_x = 0;
 	}
 	data->map[y][x] = '0';
 }

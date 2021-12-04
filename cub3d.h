@@ -34,7 +34,7 @@ typedef struct s_render
 	unsigned int bg_color_up;
 	unsigned int bg_color_down;
 	unsigned int color;
-	float cameraX;
+	float camera_x;
 	float ray_dir_x;
 	float ray_dir_y;
 	float delta_dist_x;
@@ -59,12 +59,12 @@ typedef struct s_player
 	float move_speed;
 	float rotate_speed;
 	float 	plane_value;
-	float	planeX;
-	float 	planeY;
-	float	dirX;
-	float	dirY;
-	float     player_posx;
-	float     player_posy;
+	float	plane_x;
+	float 	plane_y;
+	float	dir_x;
+	float	dir_y;
+	float     posx;
+	float     posy;
 }				t_player;
 
 typedef struct s_mlx

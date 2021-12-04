@@ -26,8 +26,8 @@ void	render_loop(t_data *data)
 	&& max_len(data->map) * 5 < data->win_w)
 	{
 		render_map(data);
-		render_sec(data, (int)data->plr->player_posy, \
-		(int)data->plr->player_posx, RED);
+		render_sec(data, (int)data->plr->posy, \
+		(int)data->plr->posx, RED);
 	}
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, \
 	data->mlx->img, 0, 0);

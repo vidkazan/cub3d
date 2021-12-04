@@ -17,29 +17,29 @@ void load_xpm_to_img(t_data *data)
 void draw_tex(t_data *data, int i)
 {
 	float step;
-	float texPos;
+	float tex_pos;
 	char *curr_color_addr;
 	int bpp;
 	int ll;
 	int end;
 	int y;
-	int texY;
+	int tex_y;
 	step = 1.0 * data->rdr->tex_h / data->rdr->line_height;
-	texPos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
+	tex_pos = (data->rdr->draw_start - data->win_h / 2 + data->rdr->line_height / 2) * step;
 	y = data->rdr->draw_start;
 	data->curr_tex_address = mlx_get_data_addr(data->curr_tex, &bpp ,&ll,&end);
 	while (y++ < data->rdr->draw_end)
 	{
-		texY = (int)texPos;
-		texPos += step;
-		if(texY == data->rdr->tex_h - 1 && data->rdr->tex_x == 0)
+		tex_y = (int)tex_pos;
+		tex_pos += step;
+		if(tex_y == data->rdr->tex_h - 1 && data->rdr->tex_x == 0)
 		{
-			curr_color_addr = data->curr_tex_address + ((ll * (texY - 1)) + (ll-(data->rdr->tex_x * bpp / 8)));
+			curr_color_addr = data->curr_tex_address + ((ll * (tex_y - 1)) + (ll-(data->rdr->tex_x * bpp / 8)));
 			data->rdr->color = *(unsigned int *)curr_color_addr;
 		}
 		else
 		{
-			curr_color_addr = data->curr_tex_address + ((ll * texY) + ( ll-(data->rdr->tex_x * bpp / 8)));
+			curr_color_addr = data->curr_tex_address + ((ll * tex_y) + ( ll-(data->rdr->tex_x * bpp / 8)));
 			data->rdr->color = *(unsigned int *)curr_color_addr;
 		}
 		my_mlx_pixel_put(data, i, y, data->rdr->color);
@@ -60,9 +60,9 @@ void get_tex(t_data *data, int map_x, int map_y, int side)
 	float x;
 	float y;
 
-	x = data->plr->player_posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
+	x = data->plr->posx + data->rdr->perp_wall_dist * data->rdr->ray_dir_x;
 	x -= map_x;
-	y = data->plr->player_posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
+	y = data->plr->posy + data->rdr->perp_wall_dist * data->rdr->ray_dir_y;
 	y -= map_y;
 	if(!side)
 	{
