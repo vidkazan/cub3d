@@ -6,7 +6,7 @@ FLAGS = -I./mlx
 
 LIBS = -L./mlx -lmlx libft/libft.a -framework OpenGL -framework AppKit
 
-SRC = 1main.c 2dda.c 2render.c 3init.c 4move.c 5texture.c 6map_check.c 7rec_texture.c lib_utils.c Get_Next_Line/get_next_line.c Get_Next_Line/get_next_line_utils.c
+SRC = 1main.c 2dda.c 2render.c 3init.c 4move.c 5texture.c 5get_tex.c 5draw_tex.c 6map_check.c 7rec_texture.c 8lib_utils.c Get_Next_Line/get_next_line.c Get_Next_Line/get_next_line_utils.c
 
 OBJ = $(SRC:.c=.o)
 
