@@ -65,5 +65,5 @@ void	get_tex(t_data *data, int map_x, int map_y, int side)
 	if (!side)
 		get_tex_x_side(data, x);
 	else
-		get_tex_x_side(data, y);
+		get_tex_y_side(data, y);
 }
