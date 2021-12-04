@@ -8,10 +8,6 @@
 # include "mlx/mlx.h"
 #include "libft/libft.h"
 # include <unistd.h>
-#include <sys/time.h>
-#include <pthread.h>
-
-# define FT_ABS(x) (x > 0 ? x : -x)
 
 #define RED		0x00A02020
 #define BLUE	0x000040A0
@@ -82,22 +78,11 @@ typedef struct s_mlx
 	int		endian;
 }				t_mlx;
 
-typedef struct s_time
-{
-	struct timeval		timeval;
-	struct timezone		timezone;
-	unsigned long long start_ms;
-	unsigned long long old_time;
-	int time;
-	int frame_time;
-}				t_time;
-
 typedef struct s_data
 {
 	int			mouse_pos;
 	int 		fd;
 	int			pl_count;
-	t_time		*time;
 	t_render	*rdr;
 	t_player	*plr;
 	t_mlx		*mlx;
@@ -128,13 +113,11 @@ typedef struct s_data
 	int			color_c_blue;
 }				t_data;
 
-// init.c
-
-void data_render_init(t_render *render);
-void data_data_init(t_data *data);
-
+void	data_render_init(t_render *render);
+void	data_data_init(t_data *data);
+float	ft_abs(float a);
 unsigned long long	current_timestamp(t_data *data, int type);
-int	game_close(t_data *data);
+int	game_close(void);
 void	data_mlx(t_mlx *mlx);
 void	data_player(t_player *plr);
 void data_pointers_init(t_data *data);
@@ -162,7 +145,7 @@ void  map_gen(t_data *data);
 void render_bg(t_data *data);
 void load_xpm_to_img(t_data *data);
 
-void	ft_read_map(t_data *m, char **argv);
+void	ft_read_map(t_data *m);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 int	ft_lstsize(t_list *lst);

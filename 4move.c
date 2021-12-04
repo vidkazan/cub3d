@@ -84,6 +84,6 @@ int	key_hook(int keycode, t_data *data)
     else if (keycode == 124)
     	rotate(data, 1);
     else if (keycode == 53)
-        game_close(data);
+        game_close();
     return (0);
 }

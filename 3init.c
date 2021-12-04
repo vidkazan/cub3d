@@ -38,8 +38,6 @@ void data_data_init(t_data *data)
 	data->path_tex_s = NULL;
 	data->path_tex_w = NULL;
 	data->path_tex_e = NULL;
-	data->time->frame_time = 0;
-	data->time->start_ms = 0;
 	data->section_size = 5;
 	data->win_w = 1900;
 	data->win_h = 1000;
@@ -67,17 +65,14 @@ void	data_player(t_player *plr)
 
 void data_pointers_init(t_data *data)
 {
-	t_time *time;
 	t_mlx *mlx;
 	t_player *plr;
 	t_render *rdr;
 
-	time = (t_time *)malloc(sizeof(t_time));
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	plr = (t_player *)malloc(sizeof(t_player));
 	rdr = (t_render *)malloc(sizeof(t_render));
 	data->curr_tex = 0;
-	data->time = time;
 	data->mlx = mlx;
 	data->plr = plr;
 	data->rdr = rdr;

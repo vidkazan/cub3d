@@ -45,16 +45,6 @@ void    render_map(t_data *data)
     }
 }
 
-void	get_speed(t_data *data)
-{
-	data->time->old_time = data->time->time;
-	data->time->time = current_timestamp(data,2);
-	data->time->frame_time = data->time->time - data->time->old_time;
-
-	data->plr->move_speed = data->time->frame_time / 1000000;
-	data->plr->rotate_speed = data->time->frame_time / 1000000;
-}
-
 void get_tex(t_data *data, int map_x, int map_y, int side)
 {
 	float x;
@@ -160,8 +150,8 @@ void render_line_prep(t_data *data, int i)
 	data->rdr->cameraX = 2 * i/(float)data->win_w - 1;
 	data->rdr->ray_dir_x = data->plr->dirX + data->plr->planeX * data->rdr->cameraX;
 	data->rdr->ray_dir_y = data->plr->dirY + data->plr->planeY * data->rdr->cameraX;
-	data->rdr->delta_dist_x = (data->rdr->ray_dir_x == 0) ? 1e30 : FT_ABS(1 / data->rdr->ray_dir_x);
-	data->rdr->delta_dist_y = (data->rdr->ray_dir_y == 0) ? 1e30 : FT_ABS(1 / data->rdr->ray_dir_y);
+	data->rdr->delta_dist_x = (data->rdr->ray_dir_x == 0) ? 1e30 : ft_abs(1 / data->rdr->ray_dir_x);
+	data->rdr->delta_dist_y = (data->rdr->ray_dir_y == 0) ? 1e30 : ft_abs(1 / data->rdr->ray_dir_y);
 }
 
 void 	render_normal(t_data *data)

@@ -19,7 +19,7 @@ int	ft_strlen_line2(char **str)
 int	ft_error(int code)
 {
 	write(2, "Error\n",6);
-	exit (code);
+	exit (1);
 }
 
 void	ft_texture(t_data *data)
@@ -253,7 +253,7 @@ char	**make_map(t_list **head, int size)
 	return (map);
 }
 
-void	ft_read_map(t_data *m, char **argv)
+void	ft_read_map(t_data *m)
 {
 	char	*line;
 	t_list	*head;
@@ -282,7 +282,6 @@ void	ft_map_check(t_data *data)
 			ft_strncmp(data->map[y], "C", 1) != 0 && \
 			data->map[y][0] != '\0' && data->map[y][0] != ' ' && \
 			data->map[y][0] != '1')
-//			ft_error ("error\n");
 			ft_error(68);
 		if (data->map[y][0] == ' ' || data->map[y][0] == '1')
 		{
@@ -291,17 +290,15 @@ void	ft_map_check(t_data *data)
 				if (data->map[y][x] == '1')
 					break ;
 			if (data->map[y][x] == '\0')
-//				ft_error("ERROR\n");
 				ft_error(69);
 			break ;
 		}
 	}
-	ft_symbol_map_check(data, y - 1); //проверка символов в карте
+	ft_symbol_map_check(data, y - 1);
 	check_doubles(data);
-	ft_texture(data); //парсер текстур
+	ft_texture(data);
 	data->map = ft_rec_map(data, get_map_start(data));
-	map_print(data);
 	parse_player_pos(data);
-	ft_wall(data, 0); // проверка замкнутости стен
+	ft_wall(data, 0);
 	params_check(data);
 }

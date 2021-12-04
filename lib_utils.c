@@ -1,5 +1,12 @@
 #include "cub3d.h"
 
+float	ft_abs(float a)
+{
+	if(a < 0)
+		return (-a);
+	return (a);
+}
+
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*buf;

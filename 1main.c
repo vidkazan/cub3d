@@ -1,24 +1,6 @@
 #include "cub3d.h"
 
-unsigned long long	current_timestamp(t_data *data,int type)
-{
-	int res;
-	unsigned long long	current_ms;
-
-	gettimeofday(&data->time->timeval, &data->time->timezone);
-	current_ms = data->time->timeval.tv_sec * 1000 + data->time->timeval.tv_usec * 0.001;
-	if(type == 2)
-	{
-		res = (current_ms - data->time->start_ms);
-		data->time->start_ms = current_ms;
-		return res;
-	}
-	else
-		data->time->start_ms = current_ms;
-	return 0;
-}
-
-int	game_close(t_data *data)
+int	game_close()
 {
     exit(0);
 }
@@ -94,20 +76,7 @@ void	file_load(t_data *data, int ac, char **av)
 	if (data->fd < 0)
 		ft_error(13);
 	if (ac > 2)
-		ft_putstr_fd("Why so many arguments?) The first is used...\n", 1);
-}
-
-void map_print(t_data *data)
-{
-	int i;
-	i = -1;
-	while (data->map[++i])
-		ft_putendl_fd(data->map[i], 1);
-}
-
-void print_with_stamp(char *msg,t_data *data)
-{
-	printf("%04llums %s\n",current_timestamp(data,2), msg);
+		ft_error(14);
 }
 
 int	main(int ac,char **av)
@@ -116,7 +85,7 @@ int	main(int ac,char **av)
     data = (t_data *)malloc(sizeof(t_data));
 	data_init(data);
 	file_load(data,ac,av);
-	ft_read_map(data, av);
+	ft_read_map(data);
 	ft_map_check(data);
     load_xpm_to_img(data);
     render(data);
