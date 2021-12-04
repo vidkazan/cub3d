@@ -16,6 +16,9 @@
 
 typedef struct s_render
 {
+	float step;
+	float tex_pos;
+	int tex_y;
 	int tex_x;
 	float wall_y;
 	float wall_x;
