@@ -8,10 +8,6 @@
 # include "mlx/mlx.h"
 #include "libft/libft.h"
 # include <unistd.h>
-#include <sys/time.h>
-#include <pthread.h>
-
-# define FT_ABS(x) (x > 0 ? x : -x)
 
 #define RED		0x00A02020
 #define BLUE	0x000040A0
@@ -20,6 +16,9 @@
 
 typedef struct s_render
 {
+	float step;
+	float tex_pos;
+	int tex_y;
 	int tex_x;
 	float wall_y;
 	float wall_x;
@@ -33,10 +32,12 @@ typedef struct s_render
 	int tex_w_w;
 	int tex_w;
 	int tex_h;
+	int is_bg_color_up;
+	int is_bg_color_down;
 	unsigned int bg_color_up;
 	unsigned int bg_color_down;
 	unsigned int color;
-	float cameraX;
+	float camera_x;
 	float ray_dir_x;
 	float ray_dir_y;
 	float delta_dist_x;
@@ -61,12 +62,12 @@ typedef struct s_player
 	float move_speed;
 	float rotate_speed;
 	float 	plane_value;
-	float	planeX;
-	float 	planeY;
-	float	dirX;
-	float	dirY;
-	float     player_posx;
-	float     player_posy;
+	float	plane_x;
+	float 	plane_y;
+	float	dir_x;
+	float	dir_y;
+	float     posx;
+	float     posy;
 }				t_player;
 
 typedef struct s_mlx
@@ -80,22 +81,11 @@ typedef struct s_mlx
 	int		endian;
 }				t_mlx;
 
-typedef struct s_time
-{
-	struct timeval		timeval;
-	struct timezone		timezone;
-	unsigned long long start_ms;
-	unsigned long long old_time;
-	int time;
-	int frame_time;
-}				t_time;
-
 typedef struct s_data
 {
 	int			mouse_pos;
 	int 		fd;
 	int			pl_count;
-	t_time		*time;
 	t_render	*rdr;
 	t_player	*plr;
 	t_mlx		*mlx;
@@ -110,6 +100,10 @@ typedef struct s_data
 	char 		*path_tex_s;
 	char 		*path_tex_w;
 	char 		*path_tex_e;
+	int 		tex_n_flag;
+	int 		tex_s_flag;
+	int 		tex_w_flag;
+	int 		tex_e_flag;
 	void 		*tex_n;
 	void 		*tex_s;
 	void 		*tex_w;
@@ -122,13 +116,11 @@ typedef struct s_data
 	int			color_c_blue;
 }				t_data;
 
-// init.c
-
-void data_render_init(t_render *render);
-void data_data_init(t_data *data);
-
+void	data_render_init(t_render *render);
+void	data_data_init(t_data *data);
+float	ft_abs(float a);
 unsigned long long	current_timestamp(t_data *data, int type);
-int	game_close(t_data *data);
+int	game_close(void);
 void	data_mlx(t_mlx *mlx);
 void	data_player(t_player *plr);
 void data_pointers_init(t_data *data);
@@ -156,18 +148,15 @@ void  map_gen(t_data *data);
 void render_bg(t_data *data);
 void load_xpm_to_img(t_data *data);
 
-void	ft_read_map(t_data *m, char **argv);
+void	ft_read_map(t_data *m);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 int	ft_lstsize(t_list *lst);
 int	get_next_line(int fd, char **line);
-int	ft_error(char *str);
+int	ft_error(int code);
 void	ft_map_check(t_data *data);
 void draw_tex(t_data *data, int i);
 void get_tex_x(t_data *data);
-
-// parsing
-
 void	ft_text_no(t_data *data, int y);
 void	ft_text_so(t_data *data, int y);
 void	ft_text_we(t_data *data, int y);
@@ -179,5 +168,18 @@ char	**ft_arrdup(char **arr);
 void map_print(t_data	*data);
 void print_with_stamp(char *msg, t_data *data);
 void *mouse_check(void *win);
+void	free_arr(char **str);
+void	get_perp(t_data *data);
+void	ft_texture(t_data *data);
+void	check_doubles(t_data *data);
+void	ft_symbol_map_check (t_data *data, int y);
+int initial_map_check(t_data *data);
+void	ft_map_check(t_data *data);
+void	ft_wall(t_data *data, int y);
+void	set_player_pos(t_data *data,int y,int x);
+char	**ft_rec_map(t_data *data, int start);
+int	get_map_start(t_data *data);
+void	parse_player_pos(t_data *data);
+void	params_check(t_data *data);
 
 #endif
