@@ -27,7 +27,6 @@ void	dda(t_data *data)
 			data->rdr->map_y += data->rdr->step_y;
 			data->rdr->side = 1;
 		}
-
 		if (data->map[data->rdr->map_y][data->rdr->map_x] != '0')
 			data->rdr->hit = 1;
 	}
@@ -38,22 +37,26 @@ void	get_side_dist(t_data *data)
 	if (data->rdr->ray_dir_x < 0)
 	{
 		data->rdr->step_x = -1;
-		data->rdr->side_dist_x = (data->plr->player_posx - data->rdr->map_x) * data->rdr->delta_dist_x;
+		data->rdr->side_dist_x = (data->plr->player_posx - \
+		data->rdr->map_x) * data->rdr->delta_dist_x;
 	}
 	else
 	{
 		data->rdr->step_x = 1;
-		data->rdr->side_dist_x = (data->rdr->map_x + 1.0 - data->plr->player_posx) * data->rdr->delta_dist_x;
+		data->rdr->side_dist_x = (data->rdr->map_x + 1.0 - \
+		data->plr->player_posx) * data->rdr->delta_dist_x;
 	}
 	if (data->rdr->ray_dir_y < 0)
 	{
 		data->rdr->step_y = -1;
-		data->rdr->side_dist_y = (data->plr->player_posy - data->rdr->map_y) * data->rdr->delta_dist_y;
+		data->rdr->side_dist_y = (data->plr->player_posy - \
+		data->rdr->map_y) * data->rdr->delta_dist_y;
 	}
 	else
 	{
 		data->rdr->step_y = 1;
-		data->rdr->side_dist_y = (data->rdr->map_y + 1.0 - data->plr->player_posy) * data->rdr->delta_dist_y;
+		data->rdr->side_dist_y = (data->rdr->map_y + 1.0 - \
+		data->plr->player_posy) * data->rdr->delta_dist_y;
 	}
 }
 
@@ -61,14 +64,16 @@ void	render_line_prep(t_data *data, int i)
 {
 	data->rdr->map_x = (int)data->plr->player_posx;
 	data->rdr->map_y = (int)data->plr->player_posy;
-	data->rdr->cameraX = 2 * i/(float)data->win_w - 1;
-	data->rdr->ray_dir_x = data->plr->dirX + data->plr->planeX * data->rdr->cameraX;
-	data->rdr->ray_dir_y = data->plr->dirY + data->plr->planeY * data->rdr->cameraX;
-	if(data->rdr->ray_dir_x == 0)
+	data->rdr->cameraX = 2 * i / (float)data->win_w - 1;
+	data->rdr->ray_dir_x = data->plr->dirX + \
+	data->plr->planeX * data->rdr->cameraX;
+	data->rdr->ray_dir_y = data->plr->dirY + \
+	data->plr->planeY * data->rdr->cameraX;
+	if (data->rdr->ray_dir_x == 0)
 		data->rdr->delta_dist_x = 1e30;
 	else
 		data->rdr->delta_dist_x = ft_abs(1 / data->rdr->ray_dir_x);
-	if(data->rdr->ray_dir_y == 0)
+	if (data->rdr->ray_dir_y == 0)
 		data->rdr->delta_dist_y = 1e30;
 	else
 		data->rdr->delta_dist_y = ft_abs(1 / data->rdr->ray_dir_y);
