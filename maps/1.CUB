@@ -1,9 +1,9 @@
 F 15,15,14
 C 30,15,0
-NO xpm/4K.xpm
-SO xpm/4K.xpm
-WE xpm/4K.xpm
-EA xpm/4K.xpm
+NO xpm/wall1.xpm
+SO xpm/wall2.xpm
+WE xpm/wall3.xpm
+EA xpm/wall4.xpm
 
 111111111111111111111111111111111
         1000000000110000000000001
