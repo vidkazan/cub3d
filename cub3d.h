@@ -169,4 +169,6 @@ void map_print(t_data	*data);
 void print_with_stamp(char *msg, t_data *data);
 void *mouse_check(void *win);
 void	free_arr(char **str);
+void	get_perp(t_data *data);
+
 #endif
