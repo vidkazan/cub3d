@@ -8,7 +8,7 @@ HEADER = cub3d.h
 
 CC = gcc
 
-#CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror
 
 MLX_FLAGS = -I./mlx -L./mlx -lmlx -framework OpenGL -framework AppKit
 
