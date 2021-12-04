@@ -71,7 +71,7 @@ void	file_load(t_data *data, int ac, char **av)
 		"cub", 3)) && (ft_strncmp(&av[1][i], "CUB", 3))) || \
 		av[1][i - 2] == '/' || av[1][i - 2] == '\\')
 		ft_error(12);
-	data->fd = open(av[1], O_RDONLY);
+	data->fd = open(av[1], O_RDWR);
 	if (data->fd < 0)
 		ft_error(13);
 	if (ac > 2)

@@ -27,11 +27,11 @@ L_BLUE			=	\033[0;36m
 all: $(NAME)
 
 $(NAME): $(SRC) $(HEADER)
-	@ say Coooob!
+	@ say Cooooooooooooob 3D!
 	@$(CC) $(MLX_FLAGS) $(LIBS) $(SRC) -o $(NAME)
 	@echo "$(GREEN)Cub3D compiled!$(OFF_COLOR)"
 	@echo "${GREEN}For $(YELLOW)START${GREEN} press command: $(YELLOW) ./cub3D maps/1.CUB ${GREEN}! ${OFF_COLOR}"
-	@ say 3D uspieshno!
+	@ say  uspieshno!
 
 clean:
 	@make clean -C mlx

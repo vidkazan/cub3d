@@ -42,6 +42,7 @@ void	ft_symbol_map_check(t_data *data, int y)
 {
 	int	x;
 
+	data->pl_count = 0;
 	while (data->map[++y])
 	{
 		x = -1;
@@ -92,6 +93,7 @@ void	ft_map_check(t_data *data)
 	check_doubles(data);
 	ft_texture(data);
 	data->map = ft_rec_map(data, get_map_start(data));
+	ft_symbol_map_check(data,-1);
 	parse_player_pos(data);
 	ft_wall(data, 0);
 	params_check(data);
