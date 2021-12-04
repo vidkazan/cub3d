@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void data_render_init(t_render *render)
+void	data_render_init(t_render *render)
 {
 	render->tex_x = 0;
 	render->wall_x = 0;
@@ -28,7 +28,7 @@ void data_render_init(t_render *render)
 	render->draw_end = 0;
 }
 
-void data_data_init(t_data *data)
+void	data_data_init(t_data *data)
 {
 	data->tex_n_flag = 0;
 	data->tex_s_flag = 0;
@@ -59,15 +59,15 @@ void	data_mlx(t_mlx *mlx)
 void	data_player(t_player *plr)
 {
 	plr->move_speed = 0.2;
-	plr->rotate_speed = M_PI/16;
+	plr->rotate_speed = M_PI / 16;
 	plr->plane_value = 0.66;
 }
 
-void data_pointers_init(t_data *data)
+void	data_init(t_data *data)
 {
-	t_mlx *mlx;
-	t_player *plr;
-	t_render *rdr;
+	t_mlx		*mlx;
+	t_player	*plr;
+	t_render	*rdr;
 
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	plr = (t_player *)malloc(sizeof(t_player));
@@ -76,11 +76,6 @@ void data_pointers_init(t_data *data)
 	data->mlx = mlx;
 	data->plr = plr;
 	data->rdr = rdr;
-}
-
-void	data_init(t_data *data)
-{
-	data_pointers_init(data);
 	data_data_init(data);
 	data_mlx(data->mlx);
 	data_player(data->plr);

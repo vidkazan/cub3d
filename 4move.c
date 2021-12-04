@@ -2,7 +2,6 @@
 
 void rotate(t_data *data, int dir)
 {
-//	pthread_mutex_lock(data->render_lock);
 	if (dir < 0)
 	{
 		float oldDirX = data->plr->dirX;
@@ -22,7 +21,6 @@ void rotate(t_data *data, int dir)
 		data->plr->planeY = oldPlaneX * sin(data->plr->rotate_speed) + data->plr->planeY * cos(data->plr->rotate_speed);
 	}
     render_loop(data);
-//	pthread_mutex_unlock(data->render_lock);
 }
 
 float get_pos_90deg(float dirX, float dirY , int mode, char proj)
